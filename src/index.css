@@ -1,0 +1,11 @@
+:root {
+  --color-black: #000000;
+  --color-blue: #2271d1;
+  --font-one: "Roboto", sans-serif;
+  --font-two: "Source Sans Pro", sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-black);
+}
