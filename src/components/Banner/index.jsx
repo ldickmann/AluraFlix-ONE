@@ -2,8 +2,11 @@ import styled from "styled-components";
 
 const BannerStyles = styled.div`
   background-image: url(${(props) => `/images/banner-${props.$image}.png`});
+  opacity: 0.8;
   background-size: cover;
   background-position: center;
+  border-radius: 4px;
+  border: 4px solid #6bd1ff;
   width: 100%;
   height: 832px;
 `;

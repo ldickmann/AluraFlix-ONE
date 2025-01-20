@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const ButtonStyled = styled.button`
+const ButtonMedium = styled.button`
   width: 180.125px;
   height: 54px;
 
@@ -29,17 +29,41 @@ const ButtonStyled = styled.button`
     font-size: 20px;
     font-style: normal;
     font-weight: 900;
-    line-height: 24px; /* 120% */
+    line-height: 24px;
     text-transform: uppercase;
   }
 `;
 
+const ButtonBig = styled.button`
+  width: 296.822px;
+  height: 92px;
+  background-color: #6BD1FF;
+  border-radius: 15px;
+  border: none;
+
+  &.card-button {
+    color: #f5f5f5;
+    text-align: center;
+    font-family: "Roboto";
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+  }
+`;
+
 // eslint-disable-next-line react/prop-types
-const Button = ({ children, type, handleClick, className }) => {
+const Button = ({ children, type, handleClick, className, size }) => {
+  const ButtonComponent = size === "big" ? ButtonBig : ButtonMedium;
   return (
-    <ButtonStyled className={className} type={type} onClick={handleClick}>
+    <ButtonComponent
+      className={className}
+      type={type}
+      onClick={handleClick}
+      size={size}
+    >
       {children}
-    </ButtonStyled>
+    </ButtonComponent>
   );
 };
 
