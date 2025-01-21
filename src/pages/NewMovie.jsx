@@ -10,9 +10,6 @@ const Header = styled.div`
 
 const Section = styled.section`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const NewMovie = () => {
