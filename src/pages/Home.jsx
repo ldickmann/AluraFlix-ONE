@@ -47,7 +47,6 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:5000/categories");
-        console.log("response: ", response);
         if (response.status === 200) {
           const data = response.data;
 

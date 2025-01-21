@@ -13,6 +13,13 @@ const FormContainer = styled.div`
   margin: 0rem 12.5rem 4rem 12.5rem;
   border: 3px solid var(--color-white);
   padding: 2rem;
+
+  @media (max-width: 430px) {
+    max-width: 100%;
+    margin: 0rem 0rem 0rem 0rem;
+    border: none;
+    padding: 0rem;
+  }
 `;
 
 const FormTitle = styled.h1`
@@ -29,6 +36,10 @@ const Forms = styled.form`
   gap: 0.625rem;
   padding: 1.25rem;
   border-radius: 4px;
+
+  @media (max-width: 430px) {
+    padding: 0rem;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -82,6 +93,11 @@ const ButtonGroup = styled.div`
   display: flex;
   gap: 0.625rem;
   margin: 2rem 0rem 4rem 0rem;
+
+  @media (max-width: 430px) {
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const Form = ({ onSave }) => {

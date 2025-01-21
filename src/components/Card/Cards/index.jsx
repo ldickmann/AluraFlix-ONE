@@ -96,12 +96,6 @@ const Cards = ({ category, setCategories }) => {
     const handleResize = () => {
       const width = window.innerWidth;
       setIsCarousel(width <= 1024 && width >= 768) || width < 430;
-      console.log(
-        "Largura da tela:",
-        width,
-        "isCarousel:",
-        (width <= 1024 && width >= 768) || width < 430
-      );
     };
 
     window.addEventListener("resize", handleResize);

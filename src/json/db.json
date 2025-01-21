@@ -44,6 +44,13 @@
           "image": "/images/backend-1.png",
           "videoLink": "https://example.com/video4",
           "description": "Neste vídeo, vamos explorar as árvores binárias aplicadas no backend e como usá-las para otimizar dados."
+        },
+        {
+          "id": 1737498404168,
+          "title": "Github CLI",
+          "image": "/images/backend-2.png",
+          "videoLink": "https://www.youtube.com/watch?v=6o6-bKOZOEY",
+          "description": "Nesse vídeo vamos aprender um pouco mais o que seria o GitHub CLI e quais são as suas vantagens!"
         }
       ]
     },

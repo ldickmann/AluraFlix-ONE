@@ -12,6 +12,10 @@ const Header = styled.div`
 
 const Section = styled.section`
   display: flex;
+
+  @media (max-width: 430px) {
+    margin-inline: 1rem;
+  }
 `;
 
 const NewMovie = () => {

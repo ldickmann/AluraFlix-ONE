@@ -13,6 +13,11 @@ const Footer = styled.footer`
   justify-content: center;
   align-items: center;
   height: 125px;
+
+  @media (max-width: 430px) {
+    max-width: 100%;
+    width: 100%;
+  }
 `;
 
 const FooterButtons = styled.div`

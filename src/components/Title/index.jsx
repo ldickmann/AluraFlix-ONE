@@ -18,6 +18,11 @@ const Title = styled.h1`
   font-size: 60px;
   font-weight: 900;
   text-transform: uppercase;
+
+  @media (max-width: 430px) {
+    font-size: 40px;
+    text-align: center;
+  }
 `;
 
 const Subtitle = styled.h4`
@@ -29,6 +34,11 @@ const Subtitle = styled.h4`
   font-size: 20px;
   font-weight: 400;
   text-transform: uppercase;
+
+  @media (max-width: 430px) {
+    font-size: 15px;
+    text-align: center;
+  }
 `;
 
 const TitleComponent = ({ children }) => {
