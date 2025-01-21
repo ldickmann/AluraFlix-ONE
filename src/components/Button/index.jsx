@@ -25,6 +25,7 @@ const ButtonBase = styled.button`
   svg {
     width: 25px;
     height: 28px;
+    color: #fff; /* Ensure the icon is white */
   }
 
   ${(props) =>
@@ -80,7 +81,23 @@ const ButtonBase = styled.button`
     line-height: 24px;
   }
 
-  &.footer-home-button {
+  &.footer-home-button,
+  &.footer-new-movie {
+    color: #fff;
+    padding: 10px;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+  }
+
+  &.footer-home-button:not(.active) svg,
+  &.footer-new-movie:not(.active) svg {
+    color: #fff;
+  }
+
+  &.active {
     color: var(--color-blue);
     font-family: var(--font-two);
     font-size: 20px;
@@ -90,14 +107,10 @@ const ButtonBase = styled.button`
     border-radius: 50px;
     border: 2px solid #2271d1;
     background: rgba(34, 113, 209, 0.24);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 10px;
     width: 167px;
     height: 54px;
     flex-shrink: 0;
-    margin-top: 20px;
     gap: 5px;
   }
 `;
@@ -119,7 +132,7 @@ const Button = ({
 };
 
 Button.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   type: PropTypes.string,
   onClick: PropTypes.func,
   className: PropTypes.string,
