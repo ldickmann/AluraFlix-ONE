@@ -25,6 +25,11 @@ const CategoryTitleContainer = styled.div`
   border-radius: 15px;
   background: ${(props) => props.$bgColor || "#6BD1FF"};
   margin: 20px auto;
+
+  @media (max-width: 430px) {
+    width: 70%;
+    margin: 20px 0px 15px 8px; 
+  }
 `;
 
 const CategoryTitle = styled.h2`
@@ -48,12 +53,20 @@ const StyledCard = styled.div`
   border-radius: 15px;
   margin: 0 10px;
   width: 90%;
+
+  @media (max-width: 430px) {
+  }
 `;
 
 const CardImage = styled.img`
   width: 432px;
   cursor: pointer;
   border-radius: 15px 15px 0 0;
+
+  @media (max-width: 430px) {
+    width: 100%;
+    height: 260.85px;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -82,12 +95,12 @@ const Cards = ({ category, setCategories }) => {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      setIsCarousel(width <= 1024 && width >= 768);
+      setIsCarousel(width <= 1024 && width >= 768) || width < 430;
       console.log(
         "Largura da tela:",
         width,
         "isCarousel:",
-        width <= 1024 && width >= 768
+        (width <= 1024 && width >= 768) || width < 430
       );
     };
 
@@ -229,7 +242,7 @@ Cards.propTypes = {
       })
     ).isRequired,
   }).isRequired,
-  setCategories: PropTypes.func.isRequired, // <== PROP ADICIONADA
+  setCategories: PropTypes.func.isRequired,
 };
 
 export default Cards;

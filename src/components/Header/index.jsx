@@ -12,6 +12,10 @@ const HeaderStyle = styled.header`
   background: var(--color-dark);
   box-shadow: 0px 5px 29px 0px rgba(34, 113, 209, 0.7);
   padding: 0 30px 0 30px;
+
+  @media (max-width: 430px) {
+    display: none;
+  }
 `;
 
 const Logo = styled.img`
@@ -27,6 +31,7 @@ const ButtonsHeader = styled.div`
 
 const Header = () => {
   const location = useLocation();
+
   return (
     <HeaderStyle>
       <Logo src={logo} alt="AluraFlix logo" />

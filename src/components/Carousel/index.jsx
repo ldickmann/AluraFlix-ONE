@@ -19,6 +19,7 @@ const CarouselContainer = styled.div`
 const CardsWrapper = styled.div`
   display: flex;
   transition: transform 0.3s ease;
+  padding-left: ${(props) => (props.isSmallScreen ? "20px" : "0")};
 `;
 
 const Card = styled.div`
@@ -29,11 +30,12 @@ const Card = styled.div`
   border-radius: 15px;
   margin: 0 10px;
   flex-shrink: 0;
+  width: ${(props) => (props.isSmallScreen ? "calc(100% - 40px)" : "auto")};
 `;
 
 const CardImage = styled.img`
   width: 100%;
-  height: 200px;
+  height: ${(props) => (props.isSmallScreen ? "auto" : "200px")};
   border-radius: 15px 15px 0 0;
 `;
 
@@ -51,9 +53,12 @@ const ArrowButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   position: absolute;
-  top: 55%;
+  top: 50%;
   width: 100%;
   z-index: 1;
+  @media (max-width: 430px) {
+    display: flex;
+  }
 `;
 
 const ArrowButton = styled.button`
@@ -67,6 +72,7 @@ const ArrowButton = styled.button`
 
 const Carousel = ({ category, handleDelete, handleEditClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isSmallScreen = window.innerWidth < 430;
 
   const getCategoryColor = () => {
     return category.categoryColor || "#000";
@@ -74,12 +80,12 @@ const Carousel = ({ category, handleDelete, handleEditClick }) => {
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex < category.cards.length - 2 ? prevIndex + 2 : prevIndex
+      prevIndex < category.cards.length - 1 ? prevIndex + 1 : prevIndex
     );
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 2 : prevIndex));
+    setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
   };
 
   return (
@@ -94,13 +100,14 @@ const Carousel = ({ category, handleDelete, handleEditClick }) => {
         </ArrowButton>
       </ArrowButtonContainer>
 
-      <CardsWrapper>
-        {category.cards.slice(currentIndex, currentIndex + 2).map((card) => (
-          <Card key={card.id} color={getCategoryColor(category.category)}>
-            <CardImage
-              src={card.image}
-              onClick={() => window.open(card.videoLink, "_blank")}
-            />
+      <CardsWrapper isSmallScreen={isSmallScreen}>
+        {category.cards.slice(currentIndex, currentIndex + 1).map((card) => (
+          <Card
+            key={card.id}
+            color={getCategoryColor(category.category)}
+            isSmallScreen={isSmallScreen}
+          >
+            <CardImage src={card.image} isSmallScreen={isSmallScreen} />
             <ButtonContainer color={getCategoryColor(category.category)}>
               <Button
                 className={"card-button"}

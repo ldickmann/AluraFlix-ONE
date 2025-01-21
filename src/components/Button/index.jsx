@@ -79,6 +79,27 @@ const ButtonBase = styled.button`
     font-weight: 900;
     line-height: 24px;
   }
+
+  &.footer-home-button {
+    color: var(--color-blue);
+    font-family: var(--font-two);
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 24px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    border: 2px solid #2271d1;
+    background: rgba(34, 113, 209, 0.24);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    width: 167px;
+    height: 54px;
+    flex-shrink: 0;
+    margin-top: 20px;
+    gap: 5px;
+  }
 `;
 
 const Button = ({
