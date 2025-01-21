@@ -6,7 +6,7 @@ const BannerStyles = styled.div`
   background-size: cover;
   background-position: center;
   border-radius: 4px;
-  border: 4px solid #6bd1ff;
+  border: 4px solid var(--color-blue-light);
   width: 100%;
   height: 832px;
 `;

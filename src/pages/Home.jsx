@@ -27,6 +27,10 @@ const CardWrapper = styled.div`
   margin: 130px 50px 0 50px;
 `;
 
+const CardsSection = styled.div`
+  margin-bottom: 100px;
+`;
+
 const Home = () => {
   return (
     <>
@@ -37,7 +41,9 @@ const Home = () => {
             <Card />
           </CardWrapper>
         </BannerWrapper>
-        <Cards />
+        <CardsSection>
+          <Cards />
+        </CardsSection>
       </Container>
     </>
   );

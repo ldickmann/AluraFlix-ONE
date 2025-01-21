@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 const ButtonBig = styled.button`
   width: 296.822px;
   height: 92px;
-  background-color: #6bd1ff;
+  background-color: var(--color-blue-light);
   border-radius: 15px;
   border: none;
 
@@ -22,7 +22,7 @@ const ButtonBig = styled.button`
 const ButtonMedium = styled.button`
   width: 150px;
   height: 50px;
-  background-color: #6bd1ff;
+  background-color: var(--color-blue-light);
   border-radius: 10px;
   border: none;
 
@@ -108,7 +108,7 @@ const ButtonSmallStyled = styled(ButtonSmall)`
 const Button = ({
   children,
   type,
-  handleClick,
+  onClick, // Alterado para "onClick"
   className,
   size,
   icon: Icon,
@@ -129,7 +129,7 @@ const Button = ({
     <ButtonComponent
       className={className}
       type={type}
-      onClick={handleClick}
+      onClick={onClick} // Usando "onClick"
       size={size}
     >
       {Icon && <Icon />}
