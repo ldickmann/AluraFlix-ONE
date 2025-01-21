@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import logo from "../../assets/images/logo.png";
 import Button from "../Button";
+import { useLocation, Link } from "react-router-dom";
 
 const HeaderStyle = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 125px;
-  border-bottom: 4px solid var(--Blue, #2271d1);
+  border-bottom: 4px solid var(--color-blue);
   background: var(--Dark-Grey, #262626);
   box-shadow: 0px 5px 29px 0px rgba(34, 113, 209, 0.7);
   padding: 0 30px 0 30px;
@@ -25,16 +26,29 @@ const ButtonsHeader = styled.div`
 `;
 
 const Header = () => {
+  const location = useLocation();
   return (
     <HeaderStyle>
       <Logo src={logo} alt="AluraFlix logo" />
       <ButtonsHeader>
-        <Button type="button" className="home-button">
-          Home
-        </Button>
-        <Button type="button" className="new-movie">
-          Novo Video
-        </Button>
+        <Link to="/">
+          <Button
+            type="button"
+            className={location.pathname === "/" ? "home-button" : "new-movie"}
+          >
+            Home
+          </Button>
+        </Link>
+        <Link to="/NovoVideo">
+          <Button
+            type="button"
+            className={
+              location.pathname === "/NovoVideo" ? "home-button" : "new-movie"
+            }
+          >
+            Novo Video
+          </Button>
+        </Link>
       </ButtonsHeader>
     </HeaderStyle>
   );
