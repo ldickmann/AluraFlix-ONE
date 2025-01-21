@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { RiCloseCircleLine } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
@@ -18,21 +19,29 @@ const ModalWrapper = styled.div`
 const ModalContent = styled.div`
   width: 20%;
   height: 80%;
-  padding: 64px 190px 64px 190px;
+  padding: 64px 150px 64px 150px;
   border-radius: 15px;
   border: 5px solid var(--color-blue-light);
   background: #03122f;
   flex-shrink: 0;
 `;
 
+const CloseIcon = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--color-white);
+`;
+
 const ModalHeader = styled.h2`
   margin-bottom: 16px;
   color: var(--color-blue);
   font-family: Roboto;
-  font-size: 60px;
+  font-size: 45px;
   font-weight: 900;
   text-transform: uppercase;
-  padding-bottom: 40px;
+  padding-bottom: 15px;
 `;
 
 const ModalForm = styled.form`
@@ -85,31 +94,36 @@ const ModalButton = styled.button`
   border-radius: 10px;
   border: 3px solid;
   cursor: pointer;
-  color: ${({ variant }) =>
-    variant === "cancel" ? "var(--color-gray)" : "var(--color-blue)"};
-  background: ${({ variant }) =>
-    variant === "cancel" ? "none" : "rgba(0, 0, 0, 0.90)"};
-  border-color: ${({ variant }) =>
-    variant === "cancel"
-      ? "var(--color-gray-light, #F5F5F5)"
-      : "var(--Blue, #2271D1)"};
-  box-shadow: ${({ variant }) =>
-    variant === "cancel" ? "none" : "0px 0px 12px 4px #2271D1 inset"};
+  font-family: "Source Sans Pro";
+  font-size: 15px;
+  text-transform: uppercase;
+  color: ${({ $variant }) =>
+    $variant === "limpar" ? "var(--color-gray)" : "var(--color-blue)"};
+  background: ${({ $variant }) =>
+    $variant === "limpar" ? "none" : "rgba(0, 0, 0, 0.90)"};
+  border-color: ${({ $variant }) =>
+    $variant === "limpar" ? "var(--color-gray-light)" : "var(--color-blue)"};
+  box-shadow: ${({ $variant }) =>
+    $variant === "limpar" ? "none" : "0px 0px 12px 4px #2271D1 inset"};
 `;
 
 const Modal = ({ isOpen, onClose, cardData, onSave }) => {
   const [formData, setFormData] = useState({
     title: "",
+    category: "",
     image: "",
     videoLink: "",
+    description: "",
   });
 
   useEffect(() => {
     if (cardData) {
       setFormData({
         title: cardData.title || "",
+        category: cardData.category || "",
         image: cardData.image || "",
         videoLink: cardData.videoLink || "",
+        description: cardData.description || "",
       });
     }
   }, [cardData]);
@@ -125,9 +139,22 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
     onClose();
   };
 
+  const handleClear = () => {
+    setFormData({
+      title: "",
+      category: "",
+      image: "",
+      videoLink: "",
+      description: "",
+    });
+  };
+
   return (
     <ModalWrapper $isOpen={isOpen}>
       <ModalContent>
+        <CloseIcon onClick={onClose}>
+          <RiCloseCircleLine />
+        </CloseIcon>
         <ModalHeader>Editar Card</ModalHeader>
         <ModalForm onSubmit={handleSubmit}>
           <FormGroup>
@@ -183,8 +210,8 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
             <ModalButton $variant="save" type="submit">
               Salvar
             </ModalButton>
-            <ModalButton type="button" $variant="cancel" onClick={onClose}>
-              Cancelar
+            <ModalButton type="button" $variant="limpar" onClick={handleClear}>
+              Limpar
             </ModalButton>
           </ModalButtonGroup>
         </ModalForm>
