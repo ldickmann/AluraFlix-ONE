@@ -86,13 +86,11 @@ const Cards = () => {
   const getCategoryColor = (title) => categoryColors[title] || "#6BD1FF";
 
   const handleEditClick = (card) => {
-    console.log("Abrindo modal para o card:", card); // Log de depuração
     setSelectedCard(card);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    console.log("Fechando modal"); // Log de depuração
     setIsModalOpen(false);
     setSelectedCard(null);
   };

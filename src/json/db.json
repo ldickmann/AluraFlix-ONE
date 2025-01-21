@@ -5,16 +5,19 @@
       "cards": [
         {
           "id": 1,
+          "title": "O que faz uma desenvolvedora front-end?",
           "image": "/images/frontend-1.png",
           "videoLink": "https://example.com/video1"
         },
         {
           "id": 2,
+          "title": "Árvore Binárias",
           "image": "/images/frontend-2.png",
           "videoLink": "https://example.com/video2"
         },
         {
           "id": 3,
+          "title": "Implementando UX no Front-end",
           "image": "/images/frontend-3.png",
           "videoLink": "https://example.com/video3"
         }
@@ -25,16 +28,19 @@
       "cards": [
         {
           "id": 4,
+          "title": "O que estudar para ser backend developer?",
           "image": "/images/backend-1.png",
           "videoLink": "https://example.com/video4"
         },
         {
           "id": 5,
+          "title": "Git CLI - Uma Nova Experiência no Github",
           "image": "/images/backend-2.png",
           "videoLink": "https://example.com/video5"
         },
         {
           "id": 6,
+          "title": "Qual a melhor linguagem de programação?",
           "image": "/images/backend-3.png",
           "videoLink": "https://example.com/video6"
         }
