@@ -1,20 +1,19 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { RiEditLine } from "react-icons/ri";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 import Button from "../../Button";
 import Modal from "../../Modal";
 import cardsData from "../../../json/db.json";
+import Carousel from "../../Carousel";
 
 const CardContainer = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  overflow-x: hidden;
 `;
 
 const CategoryTitleContainer = styled.div`
@@ -29,7 +28,7 @@ const CategoryTitleContainer = styled.div`
 `;
 
 const CategoryTitle = styled.h2`
-  color: #fff;
+  color: var(--color-white);
   font-family: "Roboto";
   font-size: 24px;
   font-weight: 800;
@@ -48,6 +47,7 @@ const StyledCard = styled.div`
   border: 4px solid ${(props) => props.color};
   border-radius: 15px;
   margin: 0 10px;
+  width: 90%;
 `;
 
 const CardImage = styled.img`
@@ -125,15 +125,6 @@ const Cards = () => {
     );
   };
 
-  const sliderSettings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    arrows: true,
-  };
-
   return (
     <CardContainer>
       {data.map((category) => (
@@ -146,37 +137,11 @@ const Cards = () => {
             </CategoryTitleContainer>
           </ContainerCategories>
           {isCarousel ? (
-            <Slider {...sliderSettings}>
-              {category.cards.map((card) => (
-                <StyledCard
-                  key={card.id}
-                  color={getCategoryColor(category.category)}
-                >
-                  <CardImage
-                    src={card.image}
-                    onClick={() => window.open(card.videoLink, "_blank")}
-                  />
-                  <ButtonContainer color={getCategoryColor(category.category)}>
-                    <Button
-                      className={"card-button"}
-                      onClick={() => handleDelete(card.id)}
-                      size="small"
-                      icon={IoTrashBinOutline}
-                    >
-                      Deletar
-                    </Button>
-                    <Button
-                      className={"card-button"}
-                      onClick={() => handleEditClick(card)}
-                      size="small"
-                      icon={RiEditLine}
-                    >
-                      Editar
-                    </Button>
-                  </ButtonContainer>
-                </StyledCard>
-              ))}
-            </Slider>
+            <Carousel
+              category={category}
+              handleDelete={handleDelete}
+              handleEditClick={handleEditClick}
+            />
           ) : (
             <div style={{ display: "flex", justifyContent: "space-around" }}>
               {category.cards.map((card) => (

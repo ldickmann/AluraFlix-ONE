@@ -2,6 +2,9 @@
   "categories": [
     {
       "category": "FRONT END",
+      "categoryColor": "#6BD1FF",
+      "hoverColor": "#5BB8E5",
+      "bgColor": "#f0f8ff",
       "cards": [
         {
           "id": 1,
@@ -28,6 +31,9 @@
     },
     {
       "category": "BACK END",
+      "categoryColor": "#00C86F",
+      "hoverColor": "#00A75D",
+      "bgColor": "#e9f7e1",
       "cards": [
         {
           "id": 4,
@@ -54,6 +60,9 @@
     },
     {
       "category": "MOBILE",
+      "categoryColor": "#FFBA05",
+      "hoverColor": "#E6A503",
+      "bgColor": "#fff8e1",
       "cards": [
         {
           "id": 7,

@@ -16,6 +16,12 @@ const ButtonBase = styled.button`
     gap: 25px;
   }
 
+  &.carousel-button {
+    border: none;
+    color: var(--color-white);
+    gap: 25px;
+  }
+
   svg {
     width: 25px;
     height: 28px;
