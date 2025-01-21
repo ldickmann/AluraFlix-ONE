@@ -115,7 +115,6 @@ const Form = ({ onSave }) => {
     if (existingCategory) {
       console.log("Categoria existente encontrada:", existingCategory);
 
-      // Adiciona um novo cartão à categoria existente
       existingCategory.cards.push({
         id: Date.now(),
         title: formData.title,
@@ -132,7 +131,6 @@ const Form = ({ onSave }) => {
         body: JSON.stringify(existingCategory),
       });
     } else {
-      // Cria uma nova categoria com o novo cartão
       await fetch("http://localhost:5000/categories", {
         method: "POST",
         headers: {

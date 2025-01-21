@@ -1,7 +1,7 @@
 {
   "categories": [
     {
-      "id": 1,
+      "id": "1",
       "category": "FRONT END",
       "categoryColor": "#6BD1FF",
       "hoverColor": "#5BB8E5",
@@ -31,7 +31,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "category": "BACK END",
       "categoryColor": "#00C86F",
       "hoverColor": "#00A75D",
@@ -61,7 +61,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "category": "MOBILE",
       "categoryColor": "#FFBA05",
       "hoverColor": "#E6A503",
@@ -73,6 +73,27 @@
           "image": "",
           "videoLink": "",
           "description": ""
+        },
+        {
+          "id": 1737476666126,
+          "title": "Desenvolvimento Android",
+          "image": "/images/mobile-1.png",
+          "videoLink": "https://www.youtube.com/watch?v=fWscDFHKgw8",
+          "description": "Um episódio focado no desenvolvimento de aplicações Android. Neste bate-papo, Paulo Silveira e Felipe Torres conversam sobre os primeiros passos para começar a desenvolver, quais as principais ferramentas do desenvolvimento mobile, como colocar sua aplicação no ar e mais! "
+        },
+        {
+          "id": 1737478883854,
+          "title": "The New React Native",
+          "image": "/images/mobile-2.png",
+          "videoLink": "https://www.youtube.com/watch?v=52El0EUI6D0",
+          "description": "React Native EU 2019: Emily Janzer - The New React Native"
+        },
+        {
+          "id": 1737479207160,
+          "title": "Hello World",
+          "image": "/images/mobile-3.png",
+          "videoLink": "https://www.youtube.com/watch?v=xSC8j3gl7xM",
+          "description": "Chegou a hora de criarmos nosso primeiro aplicativo com o Flutter e entender como fazer tudo funcionar! \n\nEsse é apenas um dos Alura+, vídeos curtos para você se atualizar sobre as tecnologias emergentes e modinhas do mundo tech...mas com muita seriedade!  Você encontra todos esses conteúdos na plataforma da Alura, além de uma centena de cursos de tecnologia para alavancar a sua carreira! "
         }
       ]
     }

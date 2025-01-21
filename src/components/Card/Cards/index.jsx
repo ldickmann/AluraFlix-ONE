@@ -66,8 +66,8 @@ const ButtonContainer = styled.div`
   border-top: 4px solid ${(props) => props.color};
 `;
 
-const Cards = () => {
-  const [data, setData] = useState([]);
+const Cards = ({ category }) => {
+  // const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [isCarousel, setIsCarousel] = useState(false);
@@ -80,9 +80,21 @@ const Cards = () => {
 
   const getCategoryColor = (title) => categoryColors[title] || "#6BD1FF";
 
-  useEffect(() => {
-    setData(cardsData.categories);
+  // useEffect(() => {
+  //   setData(cardsData.categories);
 
+  //   const handleResize = () => {
+  //     const width = window.innerWidth;
+  //     setIsCarousel(width <= 1024 && width >= 768);
+  //   };
+
+  //   window.addEventListener("resize", handleResize);
+  //   handleResize();
+
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, []);
+
+  useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
       setIsCarousel(width <= 1024 && width >= 768);
@@ -127,56 +139,54 @@ const Cards = () => {
 
   return (
     <CardContainer>
-      {data.map((category) => (
-        <div key={category.category}>
-          <ContainerCategories>
-            <CategoryTitleContainer
-              $bgColor={getCategoryColor(category.category)}
+      {/* {data.map((category) => (
+        <div key={category.category}> */}
+      <ContainerCategories>
+        <CategoryTitleContainer $bgColor={getCategoryColor(category.category)}>
+          <CategoryTitle>{category.category}</CategoryTitle>
+        </CategoryTitleContainer>
+      </ContainerCategories>
+      {isCarousel ? (
+        <Carousel
+          category={category}
+          handleDelete={handleDelete}
+          handleEditClick={handleEditClick}
+        />
+      ) : (
+        <div style={{ display: "flex", justifyContent: "space-around" }}>
+          {category.cards.map((card) => (
+            <StyledCard
+              key={card.id}
+              color={getCategoryColor(category.category)}
             >
-              <CategoryTitle>{category.category}</CategoryTitle>
-            </CategoryTitleContainer>
-          </ContainerCategories>
-          {isCarousel ? (
-            <Carousel
-              category={category}
-              handleDelete={handleDelete}
-              handleEditClick={handleEditClick}
-            />
-          ) : (
-            <div style={{ display: "flex", justifyContent: "space-around" }}>
-              {category.cards.map((card) => (
-                <StyledCard
-                  key={card.id}
-                  color={getCategoryColor(category.category)}
+              <CardImage
+                src={card.image}
+                onClick={() => window.open(card.videoLink, "_blank")}
+              />
+              <ButtonContainer color={getCategoryColor(category.category)}>
+                <Button
+                  className={"card-button"}
+                  onClick={() => handleDelete(card.id)}
+                  size="small"
+                  icon={IoTrashBinOutline}
                 >
-                  <CardImage
-                    src={card.image}
-                    onClick={() => window.open(card.videoLink, "_blank")}
-                  />
-                  <ButtonContainer color={getCategoryColor(category.category)}>
-                    <Button
-                      className={"card-button"}
-                      onClick={() => handleDelete(card.id)}
-                      size="small"
-                      icon={IoTrashBinOutline}
-                    >
-                      Deletar
-                    </Button>
-                    <Button
-                      className={"card-button"}
-                      onClick={() => handleEditClick(card)}
-                      size="small"
-                      icon={RiEditLine}
-                    >
-                      Editar
-                    </Button>
-                  </ButtonContainer>
-                </StyledCard>
-              ))}
-            </div>
-          )}
+                  Deletar
+                </Button>
+                <Button
+                  className={"card-button"}
+                  onClick={() => handleEditClick(card)}
+                  size="small"
+                  icon={RiEditLine}
+                >
+                  Editar
+                </Button>
+              </ButtonContainer>
+            </StyledCard>
+          ))}
         </div>
-      ))}
+        //   )}
+        // </div>
+      )}
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
@@ -189,9 +199,26 @@ const Cards = () => {
   );
 };
 
+// Cards.propTypes = {
+//   data: PropTypes.array,
+//   categoryColors: PropTypes.object,
+// };
+
 Cards.propTypes = {
-  data: PropTypes.array,
-  categoryColors: PropTypes.object,
+  category: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+    categoryColor: PropTypes.string.isRequired,
+    cards: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        image: PropTypes.string.isRequired,
+        videoLink: PropTypes.string.isRequired,
+        description: PropTypes.string,
+      })
+    ).isRequired,
+  }).isRequired,
 };
 
 export default Cards;
