@@ -1,7 +1,7 @@
 {
   "categories": [
     {
-      "title": "FRONT END",
+      "category": "FRONT END",
       "cards": [
         {
           "id": 1,
@@ -24,7 +24,7 @@
       ]
     },
     {
-      "title": "BACK END",
+      "category": "BACK END",
       "cards": [
         {
           "id": 4,
@@ -47,20 +47,23 @@
       ]
     },
     {
-      "title": "MOBILE",
+      "category": "MOBILE",
       "cards": [
         {
           "id": 7,
+          "title": "Como criar um aplicativo mobile?",
           "image": "/images/mobile-1.png",
           "videoLink": "https://example.com/video7"
         },
         {
           "id": 8,
+          "title": "React Native vs Flutter",
           "image": "/images/mobile-2.png",
           "videoLink": "https://example.com/video8"
         },
         {
           "id": 9,
+          "title": "Desenvolvimento Mobile",
           "image": "/images/mobile-3.png",
           "videoLink": "https://example.com/video9"
         }

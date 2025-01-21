@@ -17,7 +17,8 @@ const ModalWrapper = styled.div`
 
 const ModalContent = styled.div`
   width: 20%;
-  padding: 84px 190px 84px 190px;
+  height: 80%;
+  padding: 64px 190px 64px 190px;
   border-radius: 15px;
   border: 5px solid var(--color-blue-light);
   background: #03122f;
@@ -49,7 +50,7 @@ const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-top: 35px;
+  margin-top: 25px;
 `;
 
 const ModalInput = styled.input`
@@ -58,7 +59,16 @@ const ModalInput = styled.input`
   border-radius: 10px;
   border: 3px solid var(--color-blue);
   background-color: #03122f;
-  color: #A5A5A5;
+  color: #a5a5a5;
+`;
+
+const Select = styled.select`
+  padding: 15px;
+  border-radius: 4px;
+  border-radius: 10px;
+  border: 3px solid var(--color-blue);
+  background-color: #03122f;
+  color: #a5a5a5;
 `;
 
 const ModalButtonGroup = styled.div`
@@ -130,7 +140,20 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
             />
           </FormGroup>
           <FormGroup>
-            <label>Link da Imagem</label>
+            <label>Categoria</label>
+            <Select
+              type="select"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+            >
+              <option value="FRONT END">Front End</option>
+              <option value="BACK END">Back End</option>
+              <option value="MOBILE">Mobile</option>
+            </Select>
+          </FormGroup>
+          <FormGroup>
+            <label>Imagem</label>
             <ModalInput
               type="text"
               name="image"
@@ -139,7 +162,7 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
             />
           </FormGroup>
           <FormGroup>
-            <label>Link do Vídeo</label>
+            <label>Vídeo</label>
             <ModalInput
               type="text"
               name="videoLink"
@@ -147,11 +170,20 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
               onChange={handleChange}
             />
           </FormGroup>
+          <FormGroup>
+            <label>Descrição</label>
+            <ModalInput
+              type="text"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+            />
+          </FormGroup>
           <ModalButtonGroup>
-            <ModalButton variant="save" type="submit">
+            <ModalButton $variant="save" type="submit">
               Salvar
             </ModalButton>
-            <ModalButton type="button" variant="cancel" onClick={onClose}>
+            <ModalButton type="button" $variant="cancel" onClick={onClose}>
               Cancelar
             </ModalButton>
           </ModalButtonGroup>

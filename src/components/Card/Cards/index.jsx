@@ -119,15 +119,18 @@ const Cards = () => {
   return (
     <CardContainer>
       {data.map((category) => (
-        <div key={category.title}>
-          <ContainerCategories key={category.title}>
-            <CategoryTitleContainer $bgColor={getCategoryColor(category.title)}>
-              <CategoryTitle>{category.title}</CategoryTitle>
+        <div key={category.category}>
+          <ContainerCategories key={category.category}>
+            <CategoryTitleContainer $bgColor={getCategoryColor(category.category)}>
+              <CategoryTitle>{category.category}</CategoryTitle>
             </CategoryTitleContainer>
           </ContainerCategories>
           <CardRow>
             {category.cards.map((card) => (
-              <Card key={card.id} color={getCategoryColor(category.title)}>
+              <Card
+                key={card.id}
+                color={getCategoryColor(category.title)}
+              >
                 <CardImage
                   src={card.image}
                   onClick={() => window.open(card.videoLink, "_blank")}
