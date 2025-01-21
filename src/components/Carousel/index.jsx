@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { RiEditLine } from "react-icons/ri";
@@ -14,12 +14,31 @@ const CarouselContainer = styled.div`
   overflow-x: hidden;
   width: 100%;
   margin-bottom: 40px;
+
+  @media (max-width: 1024px) {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
 `;
 
 const CardsWrapper = styled.div`
   display: flex;
   transition: transform 0.3s ease;
-  padding-left: ${(props) => (props.isSmallScreen ? "20px" : "0")};
+  padding-left: ${(props) => (props.$isSmallScreen ? "20px" : "0")};
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  @media (max-width: 430px) {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
 `;
 
 const Card = styled.div`
@@ -30,12 +49,21 @@ const Card = styled.div`
   border-radius: 15px;
   margin: 0 10px;
   flex-shrink: 0;
-  width: ${(props) => (props.isSmallScreen ? "calc(100% - 40px)" : "auto")};
+  width: ${(props) => (props.$isSmallScreen ? "calc(100% - 40px)" : "auto")};
+  scroll-snap-align: start;
+
+  @media (max-width: 768px) {
+    width: calc(50% - 20px);
+  }
+
+  @media (max-width: 430px) {
+    width: calc(100% - 40px);
+  }
 `;
 
 const CardImage = styled.img`
   width: 100%;
-  height: ${(props) => (props.isSmallScreen ? "auto" : "200px")};
+  height: ${(props) => (props.$isSmallScreen ? "auto" : "200px")};
   border-radius: 15px 15px 0 0;
 `;
 
@@ -56,9 +84,6 @@ const ArrowButtonContainer = styled.div`
   top: 50%;
   width: 100%;
   z-index: 1;
-  @media (max-width: 430px) {
-    display: flex;
-  }
 `;
 
 const ArrowButton = styled.button`
@@ -68,11 +93,30 @@ const ArrowButton = styled.button`
   color: var(--color-white);
   cursor: pointer;
   transition: color 0.5s;
+
+  @media (max-width: 1024px) {
+    display: block;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
+  }
 `;
 
 const Carousel = ({ category, handleDelete, handleEditClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const isSmallScreen = window.innerWidth < 430;
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1024);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 1024);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const getCategoryColor = () => {
     return category.categoryColor || "#000";
@@ -88,26 +132,37 @@ const Carousel = ({ category, handleDelete, handleEditClick }) => {
     setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
   };
 
+  const getVisibleCards = () => {
+    const screenWidth = window.innerWidth;
+    if (screenWidth < 430) {
+      return category.cards.slice(currentIndex, currentIndex + 1);
+    } else if (screenWidth < 768) {
+      return category.cards.slice(currentIndex, currentIndex + 2);
+    } else {
+      return category.cards.slice(currentIndex, currentIndex + 3);
+    }
+  };
+
   return (
     <CarouselContainer>
-      <h2>{category.category}</h2>
-      <ArrowButtonContainer>
-        <ArrowButton $left onClick={handlePrev}>
-          <FaChevronLeft />
-        </ArrowButton>
-        <ArrowButton onClick={handleNext}>
-          <FaChevronRight />
-        </ArrowButton>
-      </ArrowButtonContainer>
-
-      <CardsWrapper isSmallScreen={isSmallScreen}>
-        {category.cards.slice(currentIndex, currentIndex + 1).map((card) => (
+      {isSmallScreen && (
+        <ArrowButtonContainer>
+          <ArrowButton $left onClick={handlePrev}>
+            <FaChevronLeft />
+          </ArrowButton>
+          <ArrowButton onClick={handleNext}>
+            <FaChevronRight />
+          </ArrowButton>
+        </ArrowButtonContainer>
+      )}
+      <CardsWrapper $isSmallScreen={isSmallScreen}>
+        {getVisibleCards().map((card) => (
           <Card
             key={card.id}
             color={getCategoryColor(category.category)}
-            isSmallScreen={isSmallScreen}
+            $isSmallScreen={isSmallScreen}
           >
-            <CardImage src={card.image} isSmallScreen={isSmallScreen} />
+            <CardImage src={card.image} $isSmallScreen={isSmallScreen} />
             <ButtonContainer color={getCategoryColor(category.category)}>
               <Button
                 className={"card-button"}
