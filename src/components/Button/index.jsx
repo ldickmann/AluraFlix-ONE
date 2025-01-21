@@ -38,27 +38,27 @@ const ButtonMedium = styled.button`
 `;
 
 const ButtonSmall = styled.button`
-  width: 80px;
-  height: 30px;
-  background-color: #6bd1ff;
-  border-radius: 5px;
-  border: none;
+  width: 150px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
 
   &.card-button {
-    color: #f5f5f5;
+    background: none;
+    border: none;
+    color: var(--color-white);
     text-align: center;
     font-family: "Roboto";
-    font-size: 12px;
-    font-style: normal;
+    font-size: 16px;
     font-weight: 800;
-    line-height: normal;
+    text-transform: uppercase;
+    gap: 25px;
   }
 
   svg {
-    margin-right: 5px;
+    width: 25px;
+    height: 28px;
   }
 `;
 

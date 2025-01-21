@@ -4,16 +4,19 @@
       "title": "FRONT END",
       "cards": [
         {
-          "image": "",
-          "videoLink": ""
+          "id": 1,
+          "image": "/images/frontend-1.png",
+          "videoLink": "https://example.com/video1"
         },
         {
-          "image": "",
-          "videoLink": ""
+          "id": 2,
+          "image": "/images/frontend-2.png",
+          "videoLink": "https://example.com/video2"
         },
         {
-          "image": "",
-          "videoLink": ""
+          "id": 3,
+          "image": "/images/frontend-3.png",
+          "videoLink": "https://example.com/video3"
         }
       ]
     },
@@ -21,16 +24,19 @@
       "title": "BACK END",
       "cards": [
         {
-          "image": "",
-          "videoLink": ""
+          "id": 4,
+          "image": "/images/backend-1.png",
+          "videoLink": "https://example.com/video4"
         },
         {
-          "image": "",
-          "videoLink": ""
+          "id": 5,
+          "image": "/images/backend-2.png",
+          "videoLink": "https://example.com/video5"
         },
         {
-          "image": "",
-          "videoLink": ""
+          "id": 6,
+          "image": "/images/backend-3.png",
+          "videoLink": "https://example.com/video6"
         }
       ]
     },
@@ -38,16 +44,19 @@
       "title": "MOBILE",
       "cards": [
         {
-          "image": "",
-          "videoLink": ""
+          "id": 7,
+          "image": "/images/mobile-1.png",
+          "videoLink": "https://example.com/video7"
         },
         {
-          "image": "",
-          "videoLink": ""
+          "id": 8,
+          "image": "/images/mobile-2.png",
+          "videoLink": "https://example.com/video8"
         },
         {
-          "image": "",
-          "videoLink": ""
+          "id": 9,
+          "image": "/images/mobile-3.png",
+          "videoLink": "https://example.com/video9"
         }
       ]
     }

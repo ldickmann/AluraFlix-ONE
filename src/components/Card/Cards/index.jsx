@@ -33,8 +33,14 @@ const CategoryTitle = styled.h2`
 
 const ContainerCategories = styled.div`
   display: flex;
+  justify-self: flex-start;
+  margin: 0 0 10px 20px;
+`;
+
+const CardRow = styled.div`
+  display: flex;
   justify-content: space-around;
-  margin-bottom: 20px;
+  width: 100%;
 `;
 
 const Card = styled.div`
@@ -42,18 +48,23 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 4px solid #6bd1ff;
+  border-radius: 15px;
 `;
 
 const CardImage = styled.img`
   width: 100%;
   cursor: pointer;
+  border-radius: 15px 15px 0 0;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  gap: 70px;
   width: 100%;
-  margin-top: 10px;
+  height: 59px;
 `;
 
 const Cards = () => {
@@ -75,18 +86,21 @@ const Cards = () => {
     <CardContainer>
       {data.map((category) => (
         <div key={category.title}>
-          <CategoryTitleContainer $bgColor={getCategoryColor(category.title)}>
-            <CategoryTitle>{category.title}</CategoryTitle>
-          </CategoryTitleContainer>
-          <ContainerCategories>
-            {category.cards.map((card, index) => (
-              <Card key={index}>
+          <ContainerCategories key={category.title}>
+            <CategoryTitleContainer $bgColor={getCategoryColor(category.title)}>
+              <CategoryTitle>{category.title}</CategoryTitle>
+            </CategoryTitleContainer>
+          </ContainerCategories>
+          <CardRow>
+            {category.cards.map((card) => (
+              <Card key={card.id}>
                 <CardImage
                   src={card.image}
                   onClick={() => window.open(card.videoLick, "_blank")}
                 />
                 <ButtonContainer>
                   <Button
+                    className={"card-button"}
                     onClick={() => alert("Deletar card")}
                     size="small"
                     icon={IoTrashBinOutline}
@@ -94,6 +108,7 @@ const Cards = () => {
                     Deletar
                   </Button>
                   <Button
+                    className={"card-button"}
                     onClick={() => alert("Editar card")}
                     size="small"
                     icon={RiEditLine}
@@ -103,7 +118,7 @@ const Cards = () => {
                 </ButtonContainer>
               </Card>
             ))}
-          </ContainerCategories>
+          </CardRow>
         </div>
       ))}
     </CardContainer>
