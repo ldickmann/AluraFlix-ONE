@@ -1,0 +1,55 @@
+{
+  "categories": [
+    {
+      "title": "FRONT END",
+      "cards": [
+        {
+          "image": "",
+          "videoLink": ""
+        },
+        {
+          "image": "",
+          "videoLink": ""
+        },
+        {
+          "image": "",
+          "videoLink": ""
+        }
+      ]
+    },
+    {
+      "title": "BACK END",
+      "cards": [
+        {
+          "image": "",
+          "videoLink": ""
+        },
+        {
+          "image": "",
+          "videoLink": ""
+        },
+        {
+          "image": "",
+          "videoLink": ""
+        }
+      ]
+    },
+    {
+      "title": "MOBILE",
+      "cards": [
+        {
+          "image": "",
+          "videoLink": ""
+        },
+        {
+          "image": "",
+          "videoLink": ""
+        },
+        {
+          "image": "",
+          "videoLink": ""
+        }
+      ]
+    }
+  ]
+}

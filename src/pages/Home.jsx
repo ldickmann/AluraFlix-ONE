@@ -1,5 +1,6 @@
 import Banner from "../components/Banner";
 import Card from "../components/Card";
+import Cards from "../components/Card/Cards";
 import Header from "../components/Header";
 import styled from "styled-components";
 
@@ -38,6 +39,7 @@ const Home = () => {
             <Card />
           </CardWrapper>
         </BannerWrapper>
+        <Cards />
       </Container>
     </>
   );

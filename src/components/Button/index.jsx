@@ -1,9 +1,68 @@
-import styled from "styled-components";
+/* eslint-disable react/prop-types */
+import styled, { css } from "styled-components";
+
+const ButtonBig = styled.button`
+  width: 296.822px;
+  height: 92px;
+  background-color: #6bd1ff;
+  border-radius: 15px;
+  border: none;
+
+  &.card-button {
+    color: #f5f5f5;
+    text-align: center;
+    font-family: "Roboto";
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+  }
+`;
 
 const ButtonMedium = styled.button`
-  width: 180.125px;
-  height: 54px;
+  width: 150px;
+  height: 50px;
+  background-color: #6bd1ff;
+  border-radius: 10px;
+  border: none;
 
+  &.card-button {
+    color: #f5f5f5;
+    text-align: center;
+    font-family: "Roboto";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+  }
+`;
+
+const ButtonSmall = styled.button`
+  width: 80px;
+  height: 30px;
+  background-color: #6bd1ff;
+  border-radius: 5px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.card-button {
+    color: #f5f5f5;
+    text-align: center;
+    font-family: "Roboto";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+  }
+
+  svg {
+    margin-right: 5px;
+  }
+`;
+
+const commonStyles = css`
   &.home-button {
     color: var(--color-blue);
     border-radius: 10px;
@@ -34,27 +93,38 @@ const ButtonMedium = styled.button`
   }
 `;
 
-const ButtonBig = styled.button`
-  width: 296.822px;
-  height: 92px;
-  background-color: #6BD1FF;
-  border-radius: 15px;
-  border: none;
-
-  &.card-button {
-    color: #f5f5f5;
-    text-align: center;
-    font-family: "Roboto";
-    font-size: 48px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: normal;
-  }
+const ButtonBigStyled = styled(ButtonBig)`
+  ${commonStyles}
 `;
 
-// eslint-disable-next-line react/prop-types
-const Button = ({ children, type, handleClick, className, size }) => {
-  const ButtonComponent = size === "big" ? ButtonBig : ButtonMedium;
+const ButtonMediumStyled = styled(ButtonMedium)`
+  ${commonStyles}
+`;
+
+const ButtonSmallStyled = styled(ButtonSmall)`
+  ${commonStyles}
+`;
+
+const Button = ({
+  children,
+  type,
+  handleClick,
+  className,
+  size,
+  icon: Icon,
+}) => {
+  let ButtonComponent;
+  switch (size) {
+    case "big":
+      ButtonComponent = ButtonBigStyled;
+      break;
+    case "small":
+      ButtonComponent = ButtonSmallStyled;
+      break;
+    default:
+      ButtonComponent = ButtonMediumStyled;
+  }
+
   return (
     <ButtonComponent
       className={className}
@@ -62,6 +132,7 @@ const Button = ({ children, type, handleClick, className, size }) => {
       onClick={handleClick}
       size={size}
     >
+      {Icon && <Icon />}
       {children}
     </ButtonComponent>
   );
