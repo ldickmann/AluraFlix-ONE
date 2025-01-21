@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Button from "../../Button";
 import Modal from "../../Modal";
-import cardsData from "../../../json/db.json";
 import Carousel from "../../Carousel";
+import axios from "axios";
 
 const CardContainer = styled.section`
   display: flex;
@@ -66,38 +66,29 @@ const ButtonContainer = styled.div`
   border-top: 4px solid ${(props) => props.color};
 `;
 
-const Cards = ({ category }) => {
-  // const [data, setData] = useState([]);
+const Cards = ({ category, setCategories }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [isCarousel, setIsCarousel] = useState(false);
 
   const categoryColors = {
-    "FRONT END": "#6BD1FF",
-    "BACK END": "#00C86F",
+    FRONTEND: "#6BD1FF",
+    BACKEND: "#00C86F",
     MOBILE: "#FFBA05",
   };
 
   const getCategoryColor = (title) => categoryColors[title] || "#6BD1FF";
 
-  // useEffect(() => {
-  //   setData(cardsData.categories);
-
-  //   const handleResize = () => {
-  //     const width = window.innerWidth;
-  //     setIsCarousel(width <= 1024 && width >= 768);
-  //   };
-
-  //   window.addEventListener("resize", handleResize);
-  //   handleResize();
-
-  //   return () => window.removeEventListener("resize", handleResize);
-  // }, []);
-
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
       setIsCarousel(width <= 1024 && width >= 768);
+      console.log(
+        "Largura da tela:",
+        width,
+        "isCarousel:",
+        width <= 1024 && width >= 768
+      );
     };
 
     window.addEventListener("resize", handleResize);
@@ -116,31 +107,58 @@ const Cards = ({ category }) => {
     setSelectedCard(null);
   };
 
-  const handleSave = (updatedCard) => {
-    setData((prevData) =>
-      prevData.map((category) => ({
-        ...category,
-        cards: category.cards.map((card) =>
-          card.id === updatedCard.id ? updatedCard : card
-        ),
-      }))
-    );
-    handleCloseModal();
+  const handleSave = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/categories");
+      if (response.status === 200) {
+        const data = response.data;
+        const frontend = data.filter((item) => item.category === "FRONT END");
+        const backend = data.filter((item) => item.category === "BACKEND");
+        const mobile = data.filter((item) => item.category === "MOBILE");
+        const inovacao = data.filter((item) => item.category === "INOVAÇÃO");
+        const gestao = data.filter((item) => item.category === "GESTÃO");
+
+        setCategories({ frontend, backend, mobile, inovacao, gestao });
+        handleCloseModal();
+        console.log("Dados atualizados");
+      } else {
+        console.error("Erro ao buscar os dados", response);
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar dados:", error);
+    }
   };
 
-  const handleDelete = (cardId) => {
-    setData((prevData) =>
-      prevData.map((category) => ({
-        ...category,
-        cards: category.cards.filter((card) => card.id !== cardId),
-      }))
-    );
+  const handleDelete = async (cardId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/categories/${cardId}`
+      );
+      if (response.status === 200) {
+        const response = await axios.get("http://localhost:5000/categories");
+        if (response.status === 200) {
+          const data = response.data;
+          const frontend = data.filter((item) => item.category === "FRONT END");
+          const backend = data.filter((item) => item.category === "BACKEND");
+          const mobile = data.filter((item) => item.category === "MOBILE");
+          const inovacao = data.filter((item) => item.category === "INOVAÇÃO");
+          const gestao = data.filter((item) => item.category === "GESTÃO");
+
+          setCategories({ frontend, backend, mobile, inovacao, gestao });
+          console.log("Card deletado");
+        } else {
+          console.error("Erro ao buscar os dados", response);
+        }
+      } else {
+        console.error("Erro ao deletar card:", response);
+      }
+    } catch (error) {
+      console.error("Erro ao deletar card:", error);
+    }
   };
 
   return (
     <CardContainer>
-      {/* {data.map((category) => (
-        <div key={category.category}> */}
       <ContainerCategories>
         <CategoryTitleContainer $bgColor={getCategoryColor(category.category)}>
           <CategoryTitle>{category.category}</CategoryTitle>
@@ -184,8 +202,6 @@ const Cards = ({ category }) => {
             </StyledCard>
           ))}
         </div>
-        //   )}
-        // </div>
       )}
       {isModalOpen && (
         <Modal
@@ -199,14 +215,8 @@ const Cards = ({ category }) => {
   );
 };
 
-// Cards.propTypes = {
-//   data: PropTypes.array,
-//   categoryColors: PropTypes.object,
-// };
-
 Cards.propTypes = {
   category: PropTypes.shape({
-    id: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
     categoryColor: PropTypes.string.isRequired,
     cards: PropTypes.arrayOf(
@@ -219,6 +229,7 @@ Cards.propTypes = {
       })
     ).isRequired,
   }).isRequired,
+  setCategories: PropTypes.func.isRequired, // <== PROP ADICIONADA
 };
 
 export default Cards;

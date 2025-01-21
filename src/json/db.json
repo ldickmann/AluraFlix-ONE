@@ -16,47 +16,34 @@
         },
         {
           "id": 2,
-          "title": "Árvore Binárias",
+          "title": "Árvores Binárias",
           "image": "/images/frontend-2.png",
           "videoLink": "https://example.com/video2",
           "description": "Neste vídeo, vamos falar sobre árvores binárias e como elas são implementadas em JavaScript."
         },
         {
           "id": 3,
-          "title": "Implementando UX no Front-end",
+          "title": "Implementando UX no Front-end teste",
           "image": "/images/frontend-3.png",
           "videoLink": "https://example.com/video3",
-          "description": "Neste vídeo, vamos falar sobre a importância de implementar UX no front-end e como isso pode impactar a experiência do usuário."
+          "description": "Neste vídeo, vamos falar sobre a importância de implementar UX no front-end e como isso pode impactar a experiência do usuário.",
+          "category": ""
         }
       ]
     },
     {
       "id": "2",
-      "category": "BACK END",
+      "category": "BACKEND",
       "categoryColor": "#00C86F",
-      "hoverColor": "#00A75D",
-      "bgColor": "#e9f7e1",
+      "hoverColor": "#E6A503",
+      "bgColor": "#fff8e1",
       "cards": [
         {
           "id": 4,
-          "title": "O que estudar para ser backend developer?",
+          "title": "Árvores Binárias Teste",
           "image": "/images/backend-1.png",
           "videoLink": "https://example.com/video4",
-          "description": "Neste vídeo, vamos falar sobre o que estudar para se tornar um desenvolvedor backend e quais são as principais tecnologias utilizadas."
-        },
-        {
-          "id": 5,
-          "title": "Git CLI - Uma Nova Experiência no Github",
-          "image": "/images/backend-2.png",
-          "videoLink": "https://example.com/video5",
-          "description": "Neste vídeo, vamos falar sobre o Git CLI e como ele pode melhorar a sua experiência no Github."
-        },
-        {
-          "id": 6,
-          "title": "Qual a melhor linguagem de programação?",
-          "image": "/images/backend-3.png",
-          "videoLink": "https://example.com/video6",
-          "description": "Neste vídeo, vamos falar sobre qual é a melhor linguagem de programação para se tornar um desenvolvedor backend."
+          "description": "Neste vídeo, vamos explorar as árvores binárias aplicadas no backend e como usá-las para otimizar dados."
         }
       ]
     },
@@ -68,32 +55,25 @@
       "bgColor": "#fff8e1",
       "cards": [
         {
-          "id": 7,
-          "title": "",
-          "image": "",
-          "videoLink": "",
-          "description": ""
-        },
-        {
-          "id": 1737476666126,
+          "id": 5,
           "title": "Desenvolvimento Android",
           "image": "/images/mobile-1.png",
           "videoLink": "https://www.youtube.com/watch?v=fWscDFHKgw8",
-          "description": "Um episódio focado no desenvolvimento de aplicações Android. Neste bate-papo, Paulo Silveira e Felipe Torres conversam sobre os primeiros passos para começar a desenvolver, quais as principais ferramentas do desenvolvimento mobile, como colocar sua aplicação no ar e mais! "
+          "description": "Um episódio focado no desenvolvimento de aplicações Android. Paulo Silveira e Felipe Torres conversam sobre os primeiros passos para começar a desenvolver, as principais ferramentas, e mais!"
         },
         {
-          "id": 1737478883854,
+          "id": 6,
           "title": "The New React Native",
           "image": "/images/mobile-2.png",
           "videoLink": "https://www.youtube.com/watch?v=52El0EUI6D0",
-          "description": "React Native EU 2019: Emily Janzer - The New React Native"
+          "description": "React Native EU 2019: Emily Janzer - The New React Native."
         },
         {
-          "id": 1737479207160,
-          "title": "Hello World",
+          "id": 7,
+          "title": "Hello World com Flutter",
           "image": "/images/mobile-3.png",
           "videoLink": "https://www.youtube.com/watch?v=xSC8j3gl7xM",
-          "description": "Chegou a hora de criarmos nosso primeiro aplicativo com o Flutter e entender como fazer tudo funcionar! \n\nEsse é apenas um dos Alura+, vídeos curtos para você se atualizar sobre as tecnologias emergentes e modinhas do mundo tech...mas com muita seriedade!  Você encontra todos esses conteúdos na plataforma da Alura, além de uma centena de cursos de tecnologia para alavancar a sua carreira! "
+          "description": "Chegou a hora de criarmos nosso primeiro aplicativo com o Flutter e entender como fazer tudo funcionar! Esse é apenas um dos vídeos curtos do Alura+, disponíveis na plataforma da Alura."
         }
       ]
     }

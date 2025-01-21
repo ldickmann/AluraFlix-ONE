@@ -2,6 +2,7 @@
 import { RiCloseCircleLine } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 const ModalWrapper = styled.div`
   display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
@@ -109,6 +110,7 @@ const ModalButton = styled.button`
 
 const Modal = ({ isOpen, onClose, cardData, onSave }) => {
   const [formData, setFormData] = useState({
+    id: null,
     title: "",
     category: "",
     image: "",
@@ -119,6 +121,7 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
   useEffect(() => {
     if (cardData) {
       setFormData({
+        id: cardData.id,
         title: cardData.title || "",
         category: cardData.category || "",
         image: cardData.image || "",
@@ -133,14 +136,55 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(formData);
-    onClose();
+    try {
+      const response = await axios.get("http://localhost:5000/categories");
+      if (response.status === 200) {
+        const categories = response.data;
+        const categoryToUpdate = categories.find(
+          (cat) =>
+            cat.cards && cat.cards.some((card) => card.id === cardData.id)
+        );
+
+        if (categoryToUpdate) {
+          const updatedCards = categoryToUpdate.cards.map((card) => {
+            if (card.id === cardData.id) {
+              return { ...card, ...formData };
+            }
+            return card;
+          });
+          const updatedCategory = {
+            ...categoryToUpdate,
+            cards: updatedCards,
+          };
+          const updateCategoryResponse = await axios.put(
+            `http://localhost:5000/categories/${categoryToUpdate.id}`,
+            updatedCategory
+          );
+          if (updateCategoryResponse.status === 200) {
+            onSave(formData);
+            onClose();
+          } else {
+            console.error(
+              "Erro ao atualizar card no backend:",
+              updateCategoryResponse
+            );
+          }
+        } else {
+          console.error("Erro: categoria não encontrada.");
+        }
+      } else {
+        console.error("Erro ao buscar as categorias", response);
+      }
+    } catch (error) {
+      console.error("Erro ao salvar o card no backend:", error);
+    }
   };
 
   const handleClear = () => {
     setFormData({
+      id: null,
       title: "",
       category: "",
       image: "",
@@ -174,8 +218,8 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
               value={formData.category}
               onChange={handleChange}
             >
-              <option value="FRONT END">Front End</option>
-              <option value="BACK END">Back End</option>
+              <option value="FRONTEND">Front End</option>
+              <option value="BACKEND">Back End</option>
               <option value="MOBILE">Mobile</option>
             </Select>
           </FormGroup>

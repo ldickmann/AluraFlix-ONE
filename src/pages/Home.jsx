@@ -31,6 +31,7 @@ const CardWrapper = styled.div`
 
 const CardsSection = styled.div`
   margin-bottom: 100px;
+  max-width: 100%;
 `;
 
 const Home = () => {
@@ -46,15 +47,18 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:5000/categories");
-        const data = response.data;
+        console.log("response: ", response);
+        if (response.status === 200) {
+          const data = response.data;
 
-        const frontend = data.filter((item) => item.category === "FRONT END");
-        const backend = data.filter((item) => item.category === "BACK END");
-        const mobile = data.filter((item) => item.category === "MOBILE");
-        const inovacao = data.filter((item) => item.category === "INOVAÇÃO");
-        const gestao = data.filter((item) => item.category === "GESTÃO");
+          const frontend = data.filter((item) => item.category === "FRONT END");
+          const backend = data.filter((item) => item.category === "BACKEND");
+          const mobile = data.filter((item) => item.category === "MOBILE");
+          const inovacao = data.filter((item) => item.category === "INOVAÇÃO");
+          const gestao = data.filter((item) => item.category === "GESTÃO");
 
-        setCategories({ frontend, backend, mobile, inovacao, gestao });
+          setCategories({ frontend, backend, mobile, inovacao, gestao });
+        }
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
       }
@@ -77,19 +81,39 @@ const Home = () => {
       </BannerWrapper>
       <CardsSection>
         {categories.frontend.map((category) => (
-          <Cards key={category.id} category={category} />
+          <Cards
+            key={category.id}
+            category={category}
+            setCategories={setCategories}
+          />
         ))}
         {categories.backend.map((category) => (
-          <Cards key={category.id} category={category} />
+          <Cards
+            key={category.id}
+            category={category}
+            setCategories={setCategories}
+          />
         ))}
         {categories.mobile.map((category) => (
-          <Cards key={category.id} category={category} />
+          <Cards
+            key={category.id}
+            category={category}
+            setCategories={setCategories}
+          />
         ))}
         {categories.inovacao.map((category) => (
-          <Cards key={category.id} category={category} />
+          <Cards
+            key={category.id}
+            category={category}
+            setCategories={setCategories}
+          />
         ))}
         {categories.gestao.map((category) => (
-          <Cards key={category.id} category={category} />
+          <Cards
+            key={category.id}
+            category={category}
+            setCategories={setCategories}
+          />
         ))}
       </CardsSection>
     </Container>
