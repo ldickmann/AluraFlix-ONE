@@ -14,7 +14,7 @@ const Title = styled.h1`
   justify-content: center;
   align-items: center;
   color: var(--color-gray);
-  font-family: Roboto;
+  font-family: var(--font-one);
   font-size: 60px;
   font-weight: 900;
   text-transform: uppercase;
@@ -25,7 +25,7 @@ const Subtitle = styled.h4`
   justify-content: center;
   align-items: center;
   color: var(--color-gray);
-  font-family: Roboto;
+  font-family: var(--font-one);
   font-size: 20px;
   font-weight: 400;
   text-transform: uppercase;

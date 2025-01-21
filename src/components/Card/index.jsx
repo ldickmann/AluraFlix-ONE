@@ -49,7 +49,7 @@ const Card = ({ title, description, buttonText }) => {
         <Title>{title}</Title>
         <Description>{description}</Description>
       </CardContent>
-      <VideoPlayer />
+      <VideoPlayer videoUrl="https://www.youtube.com/embed/c8mVlakBESE?si=O73Y-oiJIBFvMJr3" />
     </CardContainer>
   );
 };

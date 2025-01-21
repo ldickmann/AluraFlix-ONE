@@ -2,6 +2,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import DividerComponent from "../Divider";
+import Button from "../Button"; // Import the Button component
 
 const FormContainer = styled.div`
   max-width: 100%;
@@ -16,7 +17,7 @@ const FormContainer = styled.div`
 
 const FormTitle = styled.h1`
   color: var(--color-white);
-  font-family: "Source Sans Pro";
+  font-family: var(--font-two);
   font-size: 1.5rem;
   font-weight: 600;
 `;
@@ -43,7 +44,7 @@ const InputGroup = styled.div`
   gap: 0.625rem;
   color: var(--color-white);
   flex: 0.5;
-  font-family: "Source Sans Pro";
+  font-family: var(--font-two);
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.5rem;
@@ -83,34 +84,6 @@ const ButtonGroup = styled.div`
   margin: 2rem 0rem 4rem 0rem;
 `;
 
-const SaveButton = styled.button`
-  width: 180px;
-  padding: 0.625rem;
-  border-radius: 0.625rem;
-  border: 3px solid var(--color-blue);
-  background: none;
-  color: var(--color-white);
-  cursor: pointer;
-  font-family: Roboto;
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-transform: uppercase;
-`;
-
-const ClearButton = styled.button`
-  width: 180px;
-  padding: 0.625rem;
-  border-radius: 0.625rem;
-  border: 2px solid var(--color-gray);
-  background: none;
-  color: var(--color-white);
-  cursor: pointer;
-  font-family: Roboto;
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-transform: uppercase;
-`;
-
 const Form = ({ onSave }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -128,8 +101,62 @@ const Form = ({ onSave }) => {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const response = await fetch("http://localhost:5000/categories");
+    const categories = await response.json();
+
+    console.log("Categorias retornadas:", categories);
+
+    const existingCategory = categories.find(
+      (category) => category.category === formData.category
+    );
+
+    if (existingCategory) {
+      console.log("Categoria existente encontrada:", existingCategory);
+
+      // Adiciona um novo cartão à categoria existente
+      existingCategory.cards.push({
+        id: Date.now(),
+        title: formData.title,
+        image: formData.image,
+        videoLink: formData.videoLink,
+        description: formData.description,
+      });
+
+      await fetch(`http://localhost:5000/categories/${existingCategory.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(existingCategory),
+      });
+    } else {
+      // Cria uma nova categoria com o novo cartão
+      await fetch("http://localhost:5000/categories", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: Date.now().toString(),
+          category: formData.category,
+          categoryColor: "#6BD1FF",
+          hoverColor: "#5BB8E5",
+          bgColor: "#f0f8ff",
+          cards: [
+            {
+              id: Date.now(),
+              title: formData.title,
+              image: formData.image,
+              videoLink: formData.videoLink,
+              description: formData.description,
+            },
+          ],
+        }),
+      });
+    }
+
     onSave(formData);
     setFormData({
       title: "",
@@ -215,12 +242,12 @@ const Form = ({ onSave }) => {
           </InputGroup>
         </FormGroup>
         <ButtonGroup>
-          <SaveButton $variant="save" type="submit">
+          <Button $variant="save" type="submit" onClick={handleSubmit}>
             Salvar
-          </SaveButton>
-          <ClearButton type="button" $variant="limpar" onClick={handleClear}>
+          </Button>
+          <Button type="button" $variant="limpar" onClick={handleClear}>
             Limpar
-          </ClearButton>
+          </Button>
         </ButtonGroup>
       </Forms>
     </FormContainer>

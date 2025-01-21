@@ -37,7 +37,7 @@ const CloseIcon = styled.div`
 const ModalHeader = styled.h2`
   margin-bottom: 16px;
   color: var(--color-blue);
-  font-family: Roboto;
+  font-family: var(--font-one);
   font-size: 45px;
   font-weight: 900;
   text-transform: uppercase;
@@ -48,7 +48,7 @@ const ModalForm = styled.form`
   display: flex;
   flex-direction: column;
   color: var(--color-white);
-  font-family: "Source Sans Pro";
+  font-family: var(--font-two);
   font-size: 20px;
   font-weight: 600;
   line-height: 24px;
@@ -68,7 +68,7 @@ const ModalInput = styled.input`
   border-radius: 10px;
   border: 3px solid var(--color-blue);
   background-color: #03122f;
-  color: #a5a5a5;
+  color: var(--color-gray-light);
 `;
 
 const Select = styled.select`
@@ -77,7 +77,7 @@ const Select = styled.select`
   border-radius: 10px;
   border: 3px solid var(--color-blue);
   background-color: #03122f;
-  color: #a5a5a5;
+  color: var(--color-gray-light);
 `;
 
 const ModalButtonGroup = styled.div`
@@ -94,7 +94,7 @@ const ModalButton = styled.button`
   border-radius: 10px;
   border: 3px solid;
   cursor: pointer;
-  font-family: "Source Sans Pro";
+  font-family: var(--font-two);
   font-size: 15px;
   text-transform: uppercase;
   color: ${({ $variant }) =>

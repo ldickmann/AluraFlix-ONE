@@ -9,7 +9,7 @@ const HeaderStyle = styled.header`
   align-items: center;
   height: 125px;
   border-bottom: 4px solid var(--color-blue);
-  background: var(--Dark-Grey, #262626);
+  background: var(--color-dark);
   box-shadow: 0px 5px 29px 0px rgba(34, 113, 209, 0.7);
   padding: 0 30px 0 30px;
 `;

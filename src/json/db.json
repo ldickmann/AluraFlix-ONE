@@ -1,6 +1,7 @@
 {
   "categories": [
     {
+      "id": 1,
       "category": "FRONT END",
       "categoryColor": "#6BD1FF",
       "hoverColor": "#5BB8E5",
@@ -30,6 +31,7 @@
       ]
     },
     {
+      "id": 2,
       "category": "BACK END",
       "categoryColor": "#00C86F",
       "hoverColor": "#00A75D",
@@ -59,6 +61,7 @@
       ]
     },
     {
+      "id": 3,
       "category": "MOBILE",
       "categoryColor": "#FFBA05",
       "hoverColor": "#E6A503",
@@ -66,23 +69,9 @@
       "cards": [
         {
           "id": 7,
-          "title": "Como criar um aplicativo mobile?",
-          "image": "/images/mobile-1.png",
-          "videoLink": "https://example.com/video7",
-          "description": ""
-        },
-        {
-          "id": 8,
-          "title": "React Native vs Flutter",
-          "image": "/images/mobile-2.png",
-          "videoLink": "https://example.com/video8",
-          "description": ""
-        },
-        {
-          "id": 9,
-          "title": "Desenvolvimento Mobile",
-          "image": "/images/mobile-3.png",
-          "videoLink": "https://example.com/video9",
+          "title": "",
+          "image": "",
+          "videoLink": "",
           "description": ""
         }
       ]

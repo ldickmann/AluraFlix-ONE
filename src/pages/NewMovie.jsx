@@ -13,13 +13,17 @@ const Section = styled.section`
 `;
 
 const NewMovie = () => {
+  const handleSave = (formData) => {
+    console.log("Dados do formulário salvos:", formData);
+  };
+
   return (
     <>
       <Header>
         <TitleComponent>Novo Vídeo</TitleComponent>
       </Header>
       <Section>
-        <Form />
+        <Form onSave={handleSave} />
       </Section>
     </>
   );
