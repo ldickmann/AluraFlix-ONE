@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
+import { Title, Description } from "../Card";
 
 const BannerStyles = styled.div`
   background-image: url(${(props) => `/images/banner-${props.$image}.png`});
@@ -9,11 +11,25 @@ const BannerStyles = styled.div`
   border: 4px solid var(--color-blue-light);
   width: 100%;
   height: 832px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
-// eslint-disable-next-line react/prop-types
-const Banner = ({ image }) => {
-  return <BannerStyles $image={image}></BannerStyles>;
+const Banner = ({ image, title, description }) => {
+  return (
+    <BannerStyles $image={image}>
+      <Title>{title}</Title>
+      <Description>{description}</Description>
+    </BannerStyles>
+  );
+};
+
+Banner.propTypes = {
+  image: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  description: PropTypes.string,
 };
 
 export default Banner;

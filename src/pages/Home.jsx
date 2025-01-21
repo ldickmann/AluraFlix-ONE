@@ -33,19 +33,21 @@ const CardsSection = styled.div`
 
 const Home = () => {
   return (
-    <>
-      <Container>
-        <BannerWrapper>
-          <Banner image={"home"} />
-          <CardWrapper>
-            <Card />
-          </CardWrapper>
-        </BannerWrapper>
-        <CardsSection>
-          <Cards />
-        </CardsSection>
-      </Container>
-    </>
+    <Container>
+      <BannerWrapper>
+        <Banner image="home" />
+        <CardWrapper>
+          <Card
+            title="SEO com React"
+            description="Eu to aqui pra nesse vídeo dizer que a gente vai aprender a começar uma app inspirada no desenho Pokémon com Nextjs e React, ver algumas dicas sobre performance e de quebra conhecer uma plataforma sensacional pra fazer deploy que é a Vercel. Tudo em 22 minutos nesse vídeo feito com todo o carinho do mundo construindo uma 'Pokedex'! "
+            buttonText="Front End"
+          />
+        </CardWrapper>
+      </BannerWrapper>
+      <CardsSection>
+        <Cards />
+      </CardsSection>
+    </Container>
   );
 };
 

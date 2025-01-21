@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { RiEditLine } from "react-icons/ri";
-import styled from "styled-components";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import Button from "../../Button";
 import Modal from "../../Modal";
 import cardsData from "../../../json/db.json";
@@ -37,23 +41,17 @@ const ContainerCategories = styled.div`
   margin: 0 0 10px 20px;
 `;
 
-const CardRow = styled.div`
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-`;
-
-const Card = styled.div`
-  width: 30%;
+const StyledCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 4px solid ${(props) => props.color};
   border-radius: 15px;
+  margin: 0 10px;
 `;
 
 const CardImage = styled.img`
-  width: 100%;
+  width: 432px;
   cursor: pointer;
   border-radius: 15px 15px 0 0;
 `;
@@ -72,10 +70,7 @@ const Cards = () => {
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-
-  useEffect(() => {
-    setData(cardsData.categories);
-  }, []);
+  const [isCarousel, setIsCarousel] = useState(false);
 
   const categoryColors = {
     "FRONT END": "#6BD1FF",
@@ -84,6 +79,20 @@ const Cards = () => {
   };
 
   const getCategoryColor = (title) => categoryColors[title] || "#6BD1FF";
+
+  useEffect(() => {
+    setData(cardsData.categories);
+
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setIsCarousel(width <= 1024 && width >= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleEditClick = (card) => {
     setSelectedCard(card);
@@ -116,46 +125,91 @@ const Cards = () => {
     );
   };
 
+  const sliderSettings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    arrows: true,
+  };
+
   return (
     <CardContainer>
       {data.map((category) => (
         <div key={category.category}>
-          <ContainerCategories key={category.category}>
-            <CategoryTitleContainer $bgColor={getCategoryColor(category.category)}>
+          <ContainerCategories>
+            <CategoryTitleContainer
+              $bgColor={getCategoryColor(category.category)}
+            >
               <CategoryTitle>{category.category}</CategoryTitle>
             </CategoryTitleContainer>
           </ContainerCategories>
-          <CardRow>
-            {category.cards.map((card) => (
-              <Card
-                key={card.id}
-                color={getCategoryColor(category.title)}
-              >
-                <CardImage
-                  src={card.image}
-                  onClick={() => window.open(card.videoLink, "_blank")}
-                />
-                <ButtonContainer color={getCategoryColor(category.title)}>
-                  <Button
-                    className={"card-button"}
-                    onClick={() => handleDelete(card.id)}
-                    size="small"
-                    icon={IoTrashBinOutline}
-                  >
-                    Deletar
-                  </Button>
-                  <Button
-                    className={"card-button"}
-                    onClick={() => handleEditClick(card)}
-                    size="small"
-                    icon={RiEditLine}
-                  >
-                    Editar
-                  </Button>
-                </ButtonContainer>
-              </Card>
-            ))}
-          </CardRow>
+          {isCarousel ? (
+            <Slider {...sliderSettings}>
+              {category.cards.map((card) => (
+                <StyledCard
+                  key={card.id}
+                  color={getCategoryColor(category.category)}
+                >
+                  <CardImage
+                    src={card.image}
+                    onClick={() => window.open(card.videoLink, "_blank")}
+                  />
+                  <ButtonContainer color={getCategoryColor(category.category)}>
+                    <Button
+                      className={"card-button"}
+                      onClick={() => handleDelete(card.id)}
+                      size="small"
+                      icon={IoTrashBinOutline}
+                    >
+                      Deletar
+                    </Button>
+                    <Button
+                      className={"card-button"}
+                      onClick={() => handleEditClick(card)}
+                      size="small"
+                      icon={RiEditLine}
+                    >
+                      Editar
+                    </Button>
+                  </ButtonContainer>
+                </StyledCard>
+              ))}
+            </Slider>
+          ) : (
+            <div style={{ display: "flex", justifyContent: "space-around" }}>
+              {category.cards.map((card) => (
+                <StyledCard
+                  key={card.id}
+                  color={getCategoryColor(category.category)}
+                >
+                  <CardImage
+                    src={card.image}
+                    onClick={() => window.open(card.videoLink, "_blank")}
+                  />
+                  <ButtonContainer color={getCategoryColor(category.category)}>
+                    <Button
+                      className={"card-button"}
+                      onClick={() => handleDelete(card.id)}
+                      size="small"
+                      icon={IoTrashBinOutline}
+                    >
+                      Deletar
+                    </Button>
+                    <Button
+                      className={"card-button"}
+                      onClick={() => handleEditClick(card)}
+                      size="small"
+                      icon={RiEditLine}
+                    >
+                      Editar
+                    </Button>
+                  </ButtonContainer>
+                </StyledCard>
+              ))}
+            </div>
+          )}
         </div>
       ))}
       {isModalOpen && (
@@ -168,6 +222,11 @@ const Cards = () => {
       )}
     </CardContainer>
   );
+};
+
+Cards.propTypes = {
+  data: PropTypes.array,
+  categoryColors: PropTypes.object,
 };
 
 export default Cards;

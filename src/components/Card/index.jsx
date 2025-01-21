@@ -1,11 +1,16 @@
 import styled from "styled-components";
 import Button from "../Button";
 import VideoPlayer from "../VideoPlayer";
+import PropTypes from "prop-types";
 
 const CardContainer = styled.section`
   display: flex;
   justify-content: flex-start;
   width: 100%;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const CardContent = styled.div`
@@ -14,15 +19,15 @@ const CardContent = styled.div`
   align-items: flex-start;
 `;
 
-const Title = styled.h2`
-  margin: 10px 0 10px 0;
+export const Title = styled.h2`
+  margin: 10px 0;
   font-family: "Roboto";
   font-size: 46px;
   font-weight: 400;
   color: var(--color-gray);
 `;
 
-const Paragraph = styled.p`
+export const Description = styled.p`
   color: var(--color-gray);
   font-family: "Roboto";
   font-size: 18px;
@@ -34,25 +39,25 @@ const Paragraph = styled.p`
   max-width: 50%;
 `;
 
-const Card = () => {
+const Card = ({ title, description, buttonText }) => {
   return (
     <CardContainer>
       <CardContent>
-        <Button className="card-button" size="big">
-          Front End
+        <Button size="big" className="card-button">
+          {buttonText}
         </Button>
-        <Title>SEO com React</Title>
-        <Paragraph>
-          Eu to aqui pra nesse vídeo dizer que a gente vai aprender a começar
-          uma app inspirada no desenho Pokémon com Nextjs e React, ver algumas
-          dicas sobre performance e de quebra conhecer uma plataforma
-          sensacional pra fazer deploy que é a Vercel. Tudo em 22 minutos nesse
-          vídeo feito com todo o carinho do mundo construindo um "Pokedex"!
-        </Paragraph>
+        <Title>{title}</Title>
+        <Description>{description}</Description>
       </CardContent>
       <VideoPlayer />
     </CardContainer>
   );
+};
+
+Card.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  buttonText: PropTypes.string.isRequired,
 };
 
 export default Card;
