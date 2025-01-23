@@ -32,5 +32,8 @@ https://alura-flix-one-blond.vercel.app/
 
 ### Certificado Challenge Alura & Oracle ONE
 
+![Lucas Elias Dickmann - Curso Praticando React - Challenge AluraFlix - Alura_rotated_page-0001](https://github.com/user-attachments/assets/f595e130-5931-4a18-b70a-6b9e528f501f)
+
+
 ## 🌐 Social Media
 [![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/lucas-dickmann) [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white)](https://instagram.com/luksdickmann)
