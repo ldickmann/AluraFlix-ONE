@@ -28,7 +28,7 @@ const CategoryTitleContainer = styled.div`
 
   @media (max-width: 430px) {
     width: 70%;
-    margin: 20px 0px 15px 8px; 
+    margin: 20px 0px 15px 8px;
   }
 `;
 
@@ -79,15 +79,18 @@ const ButtonContainer = styled.div`
   border-top: 4px solid ${(props) => props.color};
 `;
 
-const Cards = ({ category, setCategories }) => {
+const Cards = ({ category, setCategories, fetchCategories }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [isCarousel, setIsCarousel] = useState(false);
+  const [cards, setCards] = useState(category.cards);
 
   const categoryColors = {
     FRONTEND: "#6BD1FF",
     BACKEND: "#00C86F",
     MOBILE: "#FFBA05",
+    INOVAÇÃO: "#FF4C61",
+    GESTÃO: "#FF7A05",
   };
 
   const getCategoryColor = (title) => categoryColors[title] || "#6BD1FF";
@@ -104,29 +107,32 @@ const Cards = ({ category, setCategories }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    setCards(category.cards); // Atualiza os cards quando a categoria mudar
+  }, [category]);
+
   const handleEditClick = (card) => {
     setSelectedCard(card);
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const closeModal = () => {
     setIsModalOpen(false);
     setSelectedCard(null);
   };
 
   const handleSave = async () => {
     try {
+      // Atualiza os cards no estado e backend após salvar no modal
       const response = await axios.get("http://localhost:5000/categories");
       if (response.status === 200) {
-        const data = response.data;
-        const frontend = data.filter((item) => item.category === "FRONT END");
-        const backend = data.filter((item) => item.category === "BACKEND");
-        const mobile = data.filter((item) => item.category === "MOBILE");
-        const inovacao = data.filter((item) => item.category === "INOVAÇÃO");
-        const gestao = data.filter((item) => item.category === "GESTÃO");
-
-        setCategories({ frontend, backend, mobile, inovacao, gestao });
-        handleCloseModal();
+        const updatedCategory = response.data.find(
+          (cat) => cat.id === category.id
+        );
+        setCards(updatedCategory.cards); // Atualiza os cards
+        setCategories(response.data); // Atualiza as categorias globais
+        fetchCategories(); // Recarrega as categorias no estado global
+        closeModal();
         console.log("Dados atualizados");
       } else {
         console.error("Erro ao buscar os dados", response);
@@ -138,26 +144,40 @@ const Cards = ({ category, setCategories }) => {
 
   const handleDelete = async (cardId) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:5000/categories/${cardId}`
-      );
-      if (response.status === 200) {
-        const response = await axios.get("http://localhost:5000/categories");
-        if (response.status === 200) {
-          const data = response.data;
-          const frontend = data.filter((item) => item.category === "FRONT END");
-          const backend = data.filter((item) => item.category === "BACKEND");
-          const mobile = data.filter((item) => item.category === "MOBILE");
-          const inovacao = data.filter((item) => item.category === "INOVAÇÃO");
-          const gestao = data.filter((item) => item.category === "GESTÃO");
+      // Remove o card do estado local antes de atualizar o backend
+      const updatedCards = cards.filter((card) => card.id !== cardId);
+      setCards(updatedCards);
 
-          setCategories({ frontend, backend, mobile, inovacao, gestao });
-          console.log("Card deletado");
+      // Atualiza o backend
+      const response = await axios.get("http://localhost:5000/categories");
+      if (response.status === 200) {
+        const categories = response.data;
+        const categoryToUpdate = categories.find((category) =>
+          category.cards.some((card) => card.id === cardId)
+        );
+
+        if (categoryToUpdate) {
+          const updatedCategory = {
+            ...categoryToUpdate,
+            cards: updatedCards,
+          };
+
+          const updateResponse = await axios.put(
+            `http://localhost:5000/categories/${categoryToUpdate.id}`,
+            updatedCategory
+          );
+
+          if (updateResponse.status === 200) {
+            fetchCategories(); // Atualiza o estado global com as categorias atualizadas
+            console.log("Card deletado");
+          } else {
+            console.error("Erro ao atualizar categoria:", updateResponse);
+          }
         } else {
-          console.error("Erro ao buscar os dados", response);
+          console.error("Erro: categoria não encontrada.");
         }
       } else {
-        console.error("Erro ao deletar card:", response);
+        console.error("Erro ao buscar os dados", response);
       }
     } catch (error) {
       console.error("Erro ao deletar card:", error);
@@ -179,14 +199,14 @@ const Cards = ({ category, setCategories }) => {
         />
       ) : (
         <div style={{ display: "flex", justifyContent: "space-around" }}>
-          {category.cards.map((card) => (
+          {cards.map((card) => (
             <StyledCard
               key={card.id}
               color={getCategoryColor(category.category)}
             >
               <CardImage
                 src={card.image}
-                onClick={() => window.open(card.videoLink, "_blank")}
+                // onClick={() => window.open(card.videoLink, "_blank")}
               />
               <ButtonContainer color={getCategoryColor(category.category)}>
                 <Button
@@ -213,7 +233,7 @@ const Cards = ({ category, setCategories }) => {
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
-          onClose={handleCloseModal}
+          onClose={closeModal}
           cardData={selectedCard}
           onSave={handleSave}
         />
@@ -224,19 +244,23 @@ const Cards = ({ category, setCategories }) => {
 
 Cards.propTypes = {
   category: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
-    categoryColor: PropTypes.string.isRequired,
+    categoryColor: PropTypes.string,
+    hoverColor: PropTypes.string,
+    bgColor: PropTypes.string,
     cards: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         title: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired,
-        videoLink: PropTypes.string.isRequired,
-        description: PropTypes.string,
+        image: PropTypes.string,
+        videoLink: PropTypes.string,
+        description: PropTypes.string.isRequired,
       })
     ).isRequired,
   }).isRequired,
   setCategories: PropTypes.func.isRequired,
+  fetchCategories: PropTypes.func.isRequired,
 };
 
 export default Cards;

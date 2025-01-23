@@ -216,8 +216,8 @@ const Form = ({ onSave }) => {
               onChange={handleChange}
             >
               <option value="">Selecione a Categoria</option>
-              <option value="FRONT END">Front End</option>
-              <option value="BACK END">Back End</option>
+              <option value="FRONTEND">Front End</option>
+              <option value="BACKEND">Back End</option>
               <option value="MOBILE">Mobile</option>
             </Select>
           </InputGroup>

@@ -148,31 +148,53 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
         );
 
         if (categoryToUpdate) {
-          const updatedCards = categoryToUpdate.cards.map((card) => {
-            if (card.id === cardData.id) {
-              return { ...card, ...formData };
-            }
-            return card;
-          });
-          const updatedCategory = {
-            ...categoryToUpdate,
-            cards: updatedCards,
-          };
-          const updateCategoryResponse = await axios.put(
-            `http://localhost:5000/categories/${categoryToUpdate.id}`,
-            updatedCategory
+          // Remover o card da categoria antiga
+          const updatedOldCategoryCards = categoryToUpdate.cards.filter(
+            (card) => card.id !== cardData.id
           );
-          if (updateCategoryResponse.status === 200) {
-            onSave(formData);
-            onClose();
-          } else {
-            console.error(
-              "Erro ao atualizar card no backend:",
-              updateCategoryResponse
+          const updatedOldCategory = {
+            ...categoryToUpdate,
+            cards: updatedOldCategoryCards,
+          };
+
+          await axios.put(
+            `http://localhost:5000/categories/${categoryToUpdate.id}`,
+            updatedOldCategory
+          );
+
+          const newCategory = categories.find(
+            (cat) => cat.category === formData.category
+          );
+
+          if (newCategory) {
+            const updatedNewCategoryCards = [
+              ...newCategory.cards,
+              { ...formData, id: cardData.id },
+            ];
+            const updatedNewCategory = {
+              ...newCategory,
+              cards: updatedNewCategoryCards,
+            };
+
+            const updateCategoryResponse = await axios.put(
+              `http://localhost:5000/categories/${newCategory.id}`,
+              updatedNewCategory
             );
+
+            if (updateCategoryResponse.status === 200) {
+              onSave(updatedNewCategory.cards); // Atualiza o estado no componente pai
+              onClose();
+            } else {
+              console.error(
+                "Erro ao atualizar card no backend:",
+                updateCategoryResponse
+              );
+            }
+          } else {
+            console.error("Erro: nova categoria não encontrada.");
           }
         } else {
-          console.error("Erro: categoria não encontrada.");
+          console.error("Erro: categoria antiga não encontrada.");
         }
       } else {
         console.error("Erro ao buscar as categorias", response);
@@ -221,6 +243,8 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
               <option value="FRONTEND">Front End</option>
               <option value="BACKEND">Back End</option>
               <option value="MOBILE">Mobile</option>
+              <option value="INOVAÇÃO">Inovação</option>
+              <option value="GESTÃO">Gestão</option>
             </Select>
           </FormGroup>
           <FormGroup>

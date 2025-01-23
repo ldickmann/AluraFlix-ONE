@@ -43,27 +43,27 @@ const Home = () => {
     gestao: [],
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/categories");
-        if (response.status === 200) {
-          const data = response.data;
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/categories");
+      if (response.status === 200) {
+        const data = response.data;
 
-          const frontend = data.filter((item) => item.category === "FRONT END");
-          const backend = data.filter((item) => item.category === "BACKEND");
-          const mobile = data.filter((item) => item.category === "MOBILE");
-          const inovacao = data.filter((item) => item.category === "INOVAÇÃO");
-          const gestao = data.filter((item) => item.category === "GESTÃO");
+        const frontend = data.filter((item) => item.category === "FRONTEND");
+        const backend = data.filter((item) => item.category === "BACKEND");
+        const mobile = data.filter((item) => item.category === "MOBILE");
+        const inovacao = data.filter((item) => item.category === "INOVAÇÃO");
+        const gestao = data.filter((item) => item.category === "GESTÃO");
 
-          setCategories({ frontend, backend, mobile, inovacao, gestao });
-        }
-      } catch (error) {
-        console.error("Erro ao buscar dados:", error);
+        setCategories({ frontend, backend, mobile, inovacao, gestao });
       }
-    };
+    } catch (error) {
+      console.error("Erro ao buscar dados:", error);
+    }
+  };
 
-    fetchData();
+  useEffect(() => {
+    fetchCategories();
   }, []);
 
   return (
@@ -79,41 +79,56 @@ const Home = () => {
         </CardWrapper>
       </BannerWrapper>
       <CardsSection>
-        {categories.frontend.map((category) => (
-          <Cards
-            key={category.id}
-            category={category}
-            setCategories={setCategories}
-          />
-        ))}
-        {categories.backend.map((category) => (
-          <Cards
-            key={category.id}
-            category={category}
-            setCategories={setCategories}
-          />
-        ))}
-        {categories.mobile.map((category) => (
-          <Cards
-            key={category.id}
-            category={category}
-            setCategories={setCategories}
-          />
-        ))}
-        {categories.inovacao.map((category) => (
-          <Cards
-            key={category.id}
-            category={category}
-            setCategories={setCategories}
-          />
-        ))}
-        {categories.gestao.map((category) => (
-          <Cards
-            key={category.id}
-            category={category}
-            setCategories={setCategories}
-          />
-        ))}
+        {categories.frontend &&
+          categories.frontend.length > 0 &&
+          categories.frontend.map((category) => (
+            <Cards
+              key={category.id}
+              category={category}
+              setCategories={setCategories}
+              fetchCategories={fetchCategories}
+            />
+          ))}
+        {categories.backend &&
+          categories.backend.length > 0 &&
+          categories.backend.map((category) => (
+            <Cards
+              key={category.id}
+              category={category}
+              setCategories={setCategories}
+              fetchCategories={fetchCategories}
+            />
+          ))}
+        {categories.mobile &&
+          categories.mobile.length > 0 &&
+          categories.mobile.map((category) => (
+            <Cards
+              key={category.id}
+              category={category}
+              setCategories={setCategories}
+              fetchCategories={fetchCategories}
+            />
+          ))}
+        {categories.inovacao &&
+          categories.inovacao.length > 0 &&
+          categories.inovacao.map((category) => (
+            <Cards
+              key={category.id}
+              category={category}
+              setCategories={setCategories}
+              fetchCategories={fetchCategories}
+            />
+          ))}
+        {categories.gestao &&
+          categories.gestao.length > 0 &&
+          categories.gestao.map((category) => (
+            <Cards
+              key={category.id}
+              category={category}
+              setCategories={setCategories}
+              fetchCategories={fetchCategories}
+            />
+          ))}
       </CardsSection>
     </Container>
   );
