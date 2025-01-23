@@ -118,10 +118,10 @@ const Form = ({ onSave }) => {
   });
 
   const handleChange = ({ target }) => {
-    const { name, value } = target;
+    const { name, value, files } = target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: files ? files[0] : value,
     });
   };
 
@@ -228,6 +228,8 @@ const Form = ({ onSave }) => {
               <option value="FRONTEND">Front End</option>
               <option value="BACKEND">Back End</option>
               <option value="MOBILE">Mobile</option>
+              <option value="INOVAÇÃO">Inovação</option>
+              <option value="GESTÃO">Gestão</option>
             </Select>
           </InputGroup>
         </FormGroup>
@@ -235,7 +237,7 @@ const Form = ({ onSave }) => {
           <InputGroup>
             <label>Imagem</label>
             <FormInput
-              type="text"
+              type="file"
               name="image"
               value={formData.image}
               onChange={handleChange}

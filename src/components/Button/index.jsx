@@ -25,7 +25,7 @@ const ButtonBase = styled.button`
   svg {
     width: 25px;
     height: 28px;
-    color: #fff; /* Ensure the icon is white */
+    color: #fff;
   }
 
   ${(props) =>
@@ -56,6 +56,11 @@ const ButtonBase = styled.button`
       height: 28px;
       font-size: 16px;
       display: flex;
+
+      &.svg {
+        width: 20px;
+        height: 20px;
+      } 
     `}
 
   &.home-button {

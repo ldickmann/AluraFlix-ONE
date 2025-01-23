@@ -25,14 +25,13 @@ const CarouselContainer = styled.div`
 const CardsWrapper = styled.div`
   display: flex;
   transition: transform 0.3s ease;
-  padding-left: ${(props) =>
-    props.$isSmallScreen ? "0" : "0"};
+  padding-left: ${(props) => (props.$isSmallScreen ? "5rem" : "0")};
   width: 100%;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 
-  @media (max-width: 430px) {
+  /* @media (max-width: 430px) {
     flex-shrink: 0;
     width: 100%;
     overflow-x: auto;
@@ -40,7 +39,7 @@ const CardsWrapper = styled.div`
     -webkit-overflow-scrolling: touch;
     display: flex;
     justify-content: flex-start;
-  }
+  } */
 `;
 
 const Card = styled.div`
@@ -63,10 +62,7 @@ const Card = styled.div`
   }
 
   @media (max-width: 430px) {
-    width: calc(
-      100% - 40px
-    );
-    margin: 0 20px;
+    width: 100%;
   }
 `;
 
@@ -93,6 +89,11 @@ const ArrowButtonContainer = styled.div`
   top: 50%;
   width: 100%;
   z-index: 1;
+
+  @media (max-width: 430px) {
+    display: block;
+    margin-left: -1rem;
+  }
 `;
 
 const ArrowButton = styled.button`
@@ -114,7 +115,9 @@ const ArrowButton = styled.button`
 
 const Carousel = ({ category, handleDelete, handleEditClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1024);
+  const [isSmallScreen, setIsSmallScreen] = useState(
+    window.innerWidth < 1024 || window.innerWidth > 400
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -154,17 +157,17 @@ const Carousel = ({ category, handleDelete, handleEditClick }) => {
 
   return (
     <CarouselContainer>
-      {isSmallScreen && (
-        <ArrowButtonContainer>
-          <ArrowButton $left onClick={handlePrev}>
-            <FaChevronLeft />
-          </ArrowButton>
-          <ArrowButton onClick={handleNext}>
-            <FaChevronRight />
-          </ArrowButton>
-        </ArrowButtonContainer>
-      )}
       <CardsWrapper $isSmallScreen={isSmallScreen}>
+        {isSmallScreen && (
+          <ArrowButtonContainer>
+            <ArrowButton $left onClick={handlePrev}>
+              <FaChevronLeft />
+            </ArrowButton>
+            <ArrowButton onClick={handleNext}>
+              <FaChevronRight />
+            </ArrowButton>
+          </ArrowButtonContainer>
+        )}
         {getVisibleCards().map((card) => (
           <Card
             key={card.id}

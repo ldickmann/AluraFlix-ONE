@@ -9,17 +9,14 @@ import Carousel from "../../Carousel";
 import axios from "axios";
 
 const CardContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   width: 100%;
   overflow-x: hidden;
 `;
 
 const CategoryTitleContainer = styled.div`
-  display: flex;
   width: 432px;
   height: 70px;
+  display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 15px;
@@ -27,8 +24,8 @@ const CategoryTitleContainer = styled.div`
   margin: 20px auto;
 
   @media (max-width: 430px) {
-    width: 70%;
-    margin: 20px 0px 15px 8px;
+    width: 300px;
+    margin: 20px 0px 15px 20px;
   }
 `;
 
@@ -42,7 +39,7 @@ const CategoryTitle = styled.h2`
 const ContainerCategories = styled.div`
   display: flex;
   justify-self: flex-start;
-  margin: 0 0 10px 20px;
+  margin: 2rem 0rem 1rem 0rem;
 `;
 
 const StyledCard = styled.div`
@@ -52,12 +49,9 @@ const StyledCard = styled.div`
   border: 4px solid ${(props) => props.color};
   border-radius: 15px;
   margin: 0 10px;
-  flex-shrink: 0;
-  width: 100%;
 
   @media (max-width: 430px) {
     width: 100%;
-    margin: 0 20px;
   }
 `;
 
@@ -65,6 +59,10 @@ const CardImage = styled.img`
   width: 432px;
   cursor: pointer;
   border-radius: 15px 15px 0 0;
+
+  @media (max-width: 430px) {
+    width: 100%;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -96,12 +94,12 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      setIsCarousel(width <= 1024 && width >= 430);
+      setIsCarousel(width <= 1024 && width >= 320);
     };
-  
+
     window.addEventListener("resize", handleResize);
     handleResize();
-  
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
