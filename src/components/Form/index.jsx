@@ -5,18 +5,17 @@ import DividerComponent from "../Divider";
 import Button from "../Button"; // Import the Button component
 
 const FormContainer = styled.div`
-  max-width: 100%;
+  max-width: 50%;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0rem 12.5rem 4rem 12.5rem;
   border: 3px solid var(--color-white);
   padding: 2rem;
+  flex: 0.5%;
+  margin: 0 auto;
 
   @media (max-width: 430px) {
-    max-width: 100%;
-    margin: 0rem 0rem 0rem 0rem;
     border: none;
     padding: 0rem;
   }
@@ -30,7 +29,6 @@ const FormTitle = styled.h1`
 `;
 
 const Forms = styled.form`
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
@@ -47,6 +45,10 @@ const FormGroup = styled.div`
   flex-direction: row;
   gap: 0.625rem;
   flex: 1;
+
+  @media (max-width: 430px) {
+    display: block;
+  }
 `;
 
 const InputGroup = styled.div`
@@ -60,6 +62,11 @@ const InputGroup = styled.div`
   font-weight: 600;
   line-height: 1.5rem;
   text-transform: capitalize;
+
+  @media (max-width: 430px) {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
 `;
 
 const FormInput = styled.input`
@@ -102,6 +109,7 @@ const ButtonGroup = styled.div`
 
 const Form = ({ onSave }) => {
   const [formData, setFormData] = useState({
+    id: "",
     title: "",
     category: "",
     image: "",
@@ -173,6 +181,7 @@ const Form = ({ onSave }) => {
 
     onSave(formData);
     setFormData({
+      id: "",
       title: "",
       category: "",
       image: "",

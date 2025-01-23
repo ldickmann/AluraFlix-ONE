@@ -52,9 +52,12 @@ const StyledCard = styled.div`
   border: 4px solid ${(props) => props.color};
   border-radius: 15px;
   margin: 0 10px;
-  width: 90%;
+  flex-shrink: 0;
+  width: 100%;
 
   @media (max-width: 430px) {
+    width: 100%;
+    margin: 0 20px;
   }
 `;
 
@@ -62,11 +65,6 @@ const CardImage = styled.img`
   width: 432px;
   cursor: pointer;
   border-radius: 15px 15px 0 0;
-
-  @media (max-width: 430px) {
-    width: 100%;
-    height: 260.85px;
-  }
 `;
 
 const ButtonContainer = styled.div`
@@ -98,12 +96,12 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      setIsCarousel(width <= 1024 && width >= 768) || width < 430;
+      setIsCarousel(width <= 1024 && width >= 430);
     };
-
+  
     window.addEventListener("resize", handleResize);
     handleResize();
-
+  
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -129,9 +127,9 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
         const updatedCategory = response.data.find(
           (cat) => cat.id === category.id
         );
-        setCards(updatedCategory.cards); // Atualiza os cards
-        setCategories(response.data); // Atualiza as categorias globais
-        fetchCategories(); // Recarrega as categorias no estado global
+        setCards(updatedCategory.cards);
+        setCategories(response.data);
+        fetchCategories();
         closeModal();
         console.log("Dados atualizados");
       } else {

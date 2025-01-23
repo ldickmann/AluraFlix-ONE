@@ -25,19 +25,21 @@ const CarouselContainer = styled.div`
 const CardsWrapper = styled.div`
   display: flex;
   transition: transform 0.3s ease;
-  padding-left: ${(props) => (props.$isSmallScreen ? "20px" : "0")};
+  padding-left: ${(props) =>
+    props.$isSmallScreen ? "0" : "0"};
   width: 100%;
-
-  @media (max-width: 1024px) {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 
   @media (max-width: 430px) {
+    flex-shrink: 0;
+    width: 100%;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    display: flex;
+    justify-content: flex-start;
   }
 `;
 
@@ -49,15 +51,22 @@ const Card = styled.div`
   border-radius: 15px;
   margin: 0 10px;
   flex-shrink: 0;
-  width: ${(props) => (props.$isSmallScreen ? "calc(100% - 40px)" : "auto")};
   scroll-snap-align: start;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    width: calc(70% - 100px);
+  }
 
   @media (max-width: 768px) {
     width: calc(50% - 20px);
   }
 
   @media (max-width: 430px) {
-    width: calc(100% - 40px);
+    width: calc(
+      100% - 40px
+    );
+    margin: 0 20px;
   }
 `;
 

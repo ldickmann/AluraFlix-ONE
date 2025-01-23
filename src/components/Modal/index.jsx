@@ -25,6 +25,12 @@ const ModalContent = styled.div`
   border: 5px solid var(--color-blue-light);
   background: #03122f;
   flex-shrink: 0;
+
+  @media (max-width: 430px) {
+    width: 90%;
+    height: 90%;
+    padding: 0 0 0 0;
+  }
 `;
 
 const CloseIcon = styled.div`
@@ -33,6 +39,10 @@ const CloseIcon = styled.div`
   cursor: pointer;
   font-size: 1.5rem;
   color: var(--color-white);
+
+  @media (max-width: 430px) {
+    padding: 25px 25px;
+  }
 `;
 
 const ModalHeader = styled.h2`
@@ -43,6 +53,12 @@ const ModalHeader = styled.h2`
   font-weight: 900;
   text-transform: uppercase;
   padding-bottom: 15px;
+
+  @media (max-width: 430px) {
+    font-size: 20px;
+    margin-bottom: 0px;
+    padding-left: 25px;
+  }
 `;
 
 const ModalForm = styled.form`
@@ -54,6 +70,10 @@ const ModalForm = styled.form`
   font-weight: 600;
   line-height: 24px;
   text-transform: capitalize;
+
+  @media (max-width: 430px) {
+    padding: 0 20px;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -61,6 +81,10 @@ const FormGroup = styled.div`
   flex-direction: column;
   gap: 15px;
   margin-top: 25px;
+
+  @media (max-width: 430px) {
+    gap: 5px;
+  }
 `;
 
 const ModalInput = styled.input`
@@ -85,6 +109,10 @@ const ModalButtonGroup = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 16px;
+
+  @media (max-width: 430px) {
+    gap: 5px;
+  }
 `;
 
 const ModalButton = styled.button`
