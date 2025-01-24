@@ -6,7 +6,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-bottom: 20px;
 `;
 
 const Title = styled.h1`

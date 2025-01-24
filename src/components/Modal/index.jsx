@@ -1,5 +1,6 @@
 import { RiCloseCircleLine } from "react-icons/ri";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const ModalWrapper = styled.div`
@@ -281,6 +282,20 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
       </ModalContent>
     </ModalWrapper>
   );
+};
+
+Modal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  cardData: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    category: PropTypes.string,
+    image: PropTypes.string,
+    videoLink: PropTypes.string,
+    description: PropTypes.string,
+  }),
+  onSave: PropTypes.func.isRequired,
 };
 
 export default Modal;

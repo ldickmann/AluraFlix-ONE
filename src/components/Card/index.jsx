@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 const CardContainer = styled.section`
   display: flex;
   justify-content: flex-start;
-  width: 100%;
+  gap: 10rem;
 
   @media (max-width: 768px) {
     display: none;
@@ -14,17 +14,20 @@ const CardContainer = styled.section`
 `;
 
 const CardContent = styled.div`
+  max-width: 40%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  flex-shrink: 1;
+  flex-grow: 0;
 `;
 
 export const Title = styled.h2`
-  margin: 10px 0;
   font-family: "Roboto";
   font-size: 46px;
   font-weight: 400;
   color: var(--color-gray);
+  flex-shrink: 1;
+  flex-basis: auto;
 `;
 
 export const Description = styled.p`
@@ -32,11 +35,6 @@ export const Description = styled.p`
   font-family: "Roboto";
   font-size: 18px;
   font-weight: 300;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-  max-width: 50%;
 `;
 
 const Card = ({ title, description, buttonText }) => {

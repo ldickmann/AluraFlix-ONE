@@ -12,7 +12,7 @@ const FormContainer = styled.div`
   border: 3px solid var(--color-white);
   padding: 2rem;
   flex: 0.5%;
-  margin: 0 auto;
+  margin: 3rem auto;
 
   @media (max-width: 430px) {
     border: none;
