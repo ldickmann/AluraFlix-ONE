@@ -127,57 +127,80 @@ const Form = ({ onSave }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await fetch("http://localhost:5000/categories");
+
+    // Buscar as categorias existentes
+    const response = await fetch("http://localhost:3000/categorias");
     const categories = await response.json();
 
-    console.log("Categorias retornadas:", categories);
-
-    const existingCategory = categories.find(
+    // Encontra a categoria selecionada no select
+    const selectedCategory = categories.find(
       (category) => category.category === formData.category
     );
 
-    if (existingCategory) {
-      console.log("Categoria existente encontrada:", existingCategory);
-
-      existingCategory.cards.push({
-        id: Date.now(),
-        title: formData.title,
-        image: formData.image,
-        videoLink: formData.videoLink,
-        description: formData.description,
-      });
-
-      await fetch(`http://localhost:5000/categories/${existingCategory.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(existingCategory),
-      });
-    } else {
-      await fetch("http://localhost:5000/categories", {
+    if (selectedCategory) {
+      // Requisição POST
+      await fetch(`http://localhost:3000/categorias/${selectedCategory._id}/cards`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: Date.now().toString(),
-          category: formData.category,
-          categoryColor: "#6BD1FF",
-          hoverColor: "#5BB8E5",
-          bgColor: "#f0f8ff",
-          cards: [
-            {
-              id: Date.now(),
-              title: formData.title,
-              image: formData.image,
-              videoLink: formData.videoLink,
-              description: formData.description,
-            },
-          ],
+          title: formData.title,
+          image: formData.image,
+          videoLink: formData.videoLink,
+          description: formData.description,
         }),
       });
     }
+
+    // console.log("Categorias retornadas:", categories);
+
+    // const existingCategory = categories.find(
+    //   (category) => category.category === formData.category
+    // );
+
+    // if (existingCategory) {
+    //   console.log("Categoria existente encontrada:", existingCategory);
+
+    //   existingCategory.cards.push({
+    //     id: Date.now(),
+    //     title: formData.title,
+    //     image: formData.image,
+    //     videoLink: formData.videoLink,
+    //     description: formData.description,
+    //   });
+
+    //   await fetch(`http://localhost:5000/categories/${existingCategory.id}`, {
+    //     method: "PUT",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(existingCategory),
+    //   });
+    // } else {
+    //   await fetch("http://localhost:5000/categories", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       id: Date.now().toString(),
+    //       category: formData.category,
+    //       categoryColor: "#6BD1FF",
+    //       hoverColor: "#5BB8E5",
+    //       bgColor: "#f0f8ff",
+    //       cards: [
+    //         {
+    //           id: Date.now(),
+    //           title: formData.title,
+    //           image: formData.image,
+    //           videoLink: formData.videoLink,
+    //           description: formData.description,
+    //         },
+    //       ],
+    //     }),
+    //   });
+    // }
 
     onSave(formData);
     setFormData({

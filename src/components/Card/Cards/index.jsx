@@ -6,7 +6,6 @@ import styled from "styled-components";
 import Button from "../../Button";
 import Modal from "../../Modal";
 import Carousel from "../../Carousel";
-import axios from "axios";
 
 const CardContainer = styled.section`
   width: 100%;
@@ -120,19 +119,17 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
   const handleSave = async () => {
     try {
       // Atualiza os cards no estado e backend após salvar no modal
-      const response = await axios.get("http://localhost:5000/categories");
-      if (response.status === 200) {
-        const updatedCategory = response.data.find(
-          (cat) => cat.id === category.id
-        );
-        setCards(updatedCategory.cards);
-        setCategories(response.data);
-        fetchCategories();
-        closeModal();
-        console.log("Dados atualizados");
-      } else {
-        console.error("Erro ao buscar os dados", response);
-      }
+      await fetch(`http://localhost:3000/categorias/${category._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(category),
+      });
+
+      fetchCategories();
+      closeModal();
+      console.log("Dados atualizados");
     } catch (error) {
       console.error("Erro ao atualizar dados:", error);
     }
@@ -144,42 +141,18 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
       const updatedCards = cards.filter((card) => card.id !== cardId);
       setCards(updatedCards);
 
-      // Atualiza o backend
-      const response = await axios.get("http://localhost:5000/categories");
-      if (response.status === 200) {
-        const categories = response.data;
-        const categoryToUpdate = categories.find((category) =>
-          category.cards.some((card) => card.id === cardId)
-        );
-
-        if (categoryToUpdate) {
-          const updatedCategory = {
-            ...categoryToUpdate,
-            cards: updatedCards,
-          };
-
-          const updateResponse = await axios.put(
-            `http://localhost:5000/categories/${categoryToUpdate.id}`,
-            updatedCategory
-          );
-
-          if (updateResponse.status === 200) {
-            fetchCategories(); // Atualiza o estado global com as categorias atualizadas
-            console.log("Card deletado");
-          } else {
-            console.error("Erro ao atualizar categoria:", updateResponse);
-          }
-        } else {
-          console.error("Erro: categoria não encontrada.");
+      await fetch(
+        `http://localhost:3000/categorias/${category._id}/cards/${cardId}`,
+        {
+          method: "DELETE",
         }
-      } else {
-        console.error("Erro ao buscar os dados", response);
-      }
+      );
+      fetchCategories();
     } catch (error) {
       console.error("Erro ao deletar card:", error);
     }
   };
-
+  if (!category) return null;
   return (
     <CardContainer>
       <ContainerCategories>
@@ -195,35 +168,36 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
         />
       ) : (
         <div style={{ display: "flex", justifyContent: "space-around" }}>
-          {cards.map((card) => (
-            <StyledCard
-              key={card.id}
-              color={getCategoryColor(category.category)}
-            >
-              <CardImage
-                src={card.image}
-                // onClick={() => window.open(card.videoLink, "_blank")}
-              />
-              <ButtonContainer color={getCategoryColor(category.category)}>
-                <Button
-                  className={"card-button"}
-                  onClick={() => handleDelete(card.id)}
-                  size="small"
-                  icon={IoTrashBinOutline}
-                >
-                  Deletar
-                </Button>
-                <Button
-                  className={"card-button"}
-                  onClick={() => handleEditClick(card)}
-                  size="small"
-                  icon={RiEditLine}
-                >
-                  Editar
-                </Button>
-              </ButtonContainer>
-            </StyledCard>
-          ))}
+          {cards &&
+            cards.length > 0 &&
+            cards.map((card) => (
+              <StyledCard
+                key={card.id}
+                color={getCategoryColor(category.category)}
+              >
+                <CardImage
+                  src={card.image}
+                />
+                <ButtonContainer color={getCategoryColor(category.category)}>
+                  <Button
+                    className={"card-button"}
+                    onClick={() => handleDelete(card.id)}
+                    size="small"
+                    icon={IoTrashBinOutline}
+                  >
+                    Deletar
+                  </Button>
+                  <Button
+                    className={"card-button"}
+                    onClick={() => handleEditClick(card)}
+                    size="small"
+                    icon={RiEditLine}
+                  >
+                    Editar
+                  </Button>
+                </ButtonContainer>
+              </StyledCard>
+            ))}
         </div>
       )}
       {isModalOpen && (
@@ -240,7 +214,7 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
 
 Cards.propTypes = {
   category: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
     categoryColor: PropTypes.string,
     hoverColor: PropTypes.string,

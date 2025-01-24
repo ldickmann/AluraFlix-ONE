@@ -2,7 +2,6 @@
 import { RiCloseCircleLine } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
 
 const ModalWrapper = styled.div`
   display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
@@ -166,66 +165,43 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.get("http://localhost:5000/categories");
-      if (response.status === 200) {
-        const categories = response.data;
-        const categoryToUpdate = categories.find(
-          (cat) =>
-            cat.cards && cat.cards.some((card) => card.id === cardData.id)
-        );
-
-        if (categoryToUpdate) {
-          // Remover o card da categoria antiga
-          const updatedOldCategoryCards = categoryToUpdate.cards.filter(
-            (card) => card.id !== cardData.id
-          );
-          const updatedOldCategory = {
-            ...categoryToUpdate,
-            cards: updatedOldCategoryCards,
-          };
-
-          await axios.put(
-            `http://localhost:5000/categories/${categoryToUpdate.id}`,
-            updatedOldCategory
-          );
-
-          const newCategory = categories.find(
-            (cat) => cat.category === formData.category
-          );
-
-          if (newCategory) {
-            const updatedNewCategoryCards = [
-              ...newCategory.cards,
-              { ...formData, id: cardData.id },
-            ];
-            const updatedNewCategory = {
-              ...newCategory,
-              cards: updatedNewCategoryCards,
-            };
-
-            const updateCategoryResponse = await axios.put(
-              `http://localhost:5000/categories/${newCategory.id}`,
-              updatedNewCategory
-            );
-
-            if (updateCategoryResponse.status === 200) {
-              onSave(updatedNewCategory.cards); // Atualiza o estado no componente pai
-              onClose();
-            } else {
-              console.error(
-                "Erro ao atualizar card no backend:",
-                updateCategoryResponse
-              );
-            }
-          } else {
-            console.error("Erro: nova categoria não encontrada.");
+      const response = await fetch("http://localhost:3000/categorias");
+      const categories = await response.json();
+      const categoryToUpdate = categories.find(
+        (cat) => cat.cards && cat.cards.some((card) => card.id === cardData.id)
+      );
+      if (categoryToUpdate) {
+        await fetch(
+          `http://localhost:3000/categorias/${categoryToUpdate._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...categoryToUpdate,
+              cards: categoryToUpdate.cards.map((card) =>
+                card.id === cardData.id
+                  ? {
+                      ...card,
+                      title: formData.title,
+                      category: formData.category,
+                      image: formData.image,
+                      videoLink: formData.videoLink,
+                      description: formData.description,
+                    }
+                  : card
+              ),
+            }),
           }
-        } else {
-          console.error("Erro: categoria antiga não encontrada.");
-        }
+        );
+        onSave(formData);
+        onClose();
+        console.log("Dados atualizados");
       } else {
-        console.error("Erro ao buscar as categorias", response);
+        console.error("Erro: categoria não encontrada.");
       }
     } catch (error) {
       console.error("Erro ao salvar o card no backend:", error);
