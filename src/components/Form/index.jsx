@@ -1,5 +1,6 @@
-import styled from "styled-components";
 import { useState } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
 import DividerComponent from "../Divider";
 import Button from "../Button";
 
@@ -257,6 +258,10 @@ const Form = ({ onSave }) => {
       </Forms>
     </FormContainer>
   );
+};
+
+Form.propTypes = {
+  onSave: PropTypes.func.isRequired,
 };
 
 export default Form;
