@@ -35,17 +35,21 @@ const CardsSection = styled.div`
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchCategories = async () => {
+    setLoading(true);
     try {
       const response = await fetch("http://localhost:3000/categorias");
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`Erro na requisição: ${response.status}`);
       }
       const data = await response.json();
       setCategories(data);
     } catch (error) {
       console.error("Erro ao buscar categorias:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,7 +70,9 @@ const Home = () => {
         </CardWrapper>
       </BannerWrapper>
       <CardsSection>
-        {categories &&
+        {loading ? (
+          <p>Carregando categorias...</p>
+        ) : categories && categories.length > 0 ? (
           categories.map((category) => (
             <Cards
               key={category._id}
@@ -74,7 +80,10 @@ const Home = () => {
               setCategories={setCategories}
               fetchCategories={fetchCategories}
             />
-          ))}
+          ))
+        ) : (
+          <p>Nenhuma categoria encontrada.</p>
+        )}
       </CardsSection>
     </Container>
   );

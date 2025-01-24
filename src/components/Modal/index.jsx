@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { RiCloseCircleLine } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
@@ -159,8 +158,11 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
   }, [cardData]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    const { name, value, files } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: name === "image" ? files[0] : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -172,45 +174,39 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
       const categoryToUpdate = categories.find(
         (cat) => cat.cards && cat.cards.some((card) => card.id === cardData.id)
       );
+
       if (categoryToUpdate) {
-        await fetch(
-          `http://localhost:3000/categorias/${categoryToUpdate._id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              ...categoryToUpdate,
-              cards: categoryToUpdate.cards.map((card) =>
-                card.id === cardData.id
-                  ? {
-                      ...card,
-                      title: formData.title,
-                      category: formData.category,
-                      image: formData.image,
-                      videoLink: formData.videoLink,
-                      description: formData.description,
-                    }
-                  : card
-              ),
-            }),
-          }
+        const selectedCategory = categories.find(
+          (category) => category.category === formData.category
         );
-        onSave(formData);
-        onClose();
-        console.log("Dados atualizados");
-      } else {
-        console.error("Erro: categoria não encontrada.");
+
+        if (selectedCategory && selectedCategory._id !== categoryToUpdate._id) {
+          const formDataToSend = new FormData();
+          formDataToSend.append("title", formData.title);
+          formDataToSend.append("videoLink", formData.videoLink);
+          formDataToSend.append("description", formData.description);
+          if (formData.image) {
+            formDataToSend.append("image", formData.image);
+          }
+
+          await fetch(
+            `http://localhost:3000/categorias/${selectedCategory._id}/cards/${formData.id}`,
+            {
+              method: "PUT",
+              body: formDataToSend,
+            }
+          );
+        }
       }
+      onSave(formData);
+      onClose(); // Close the modal after saving
     } catch (error) {
-      console.error("Erro ao salvar o card no backend:", error);
+      console.error("Error updating card:", error);
     }
   };
 
   const handleClear = () => {
     setFormData({
-      id: null,
       title: "",
       category: "",
       image: "",
@@ -228,7 +224,7 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
         <ModalHeader>Editar Card</ModalHeader>
         <ModalForm onSubmit={handleSubmit}>
           <FormGroup>
-            <label>Titulo</label>
+            <label>Título</label>
             <ModalInput
               type="text"
               name="title"
@@ -239,11 +235,11 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
           <FormGroup>
             <label>Categoria</label>
             <Select
-              type="select"
               name="category"
               value={formData.category}
               onChange={handleChange}
             >
+              <option value="">Selecione a Categoria</option>
               <option value="FRONTEND">Front End</option>
               <option value="BACKEND">Back End</option>
               <option value="MOBILE">Mobile</option>
@@ -253,15 +249,10 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
           </FormGroup>
           <FormGroup>
             <label>Imagem</label>
-            <ModalInput
-              type="text"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-            />
+            <ModalInput type="file" name="image" onChange={handleChange} />
           </FormGroup>
           <FormGroup>
-            <label>Vídeo</label>
+            <label>Link do Vídeo</label>
             <ModalInput
               type="text"
               name="videoLink"
@@ -279,7 +270,7 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
             />
           </FormGroup>
           <ModalButtonGroup>
-            <ModalButton $variant="save" type="submit">
+            <ModalButton type="submit" $variant="salvar">
               Salvar
             </ModalButton>
             <ModalButton type="button" $variant="limpar" onClick={handleClear}>

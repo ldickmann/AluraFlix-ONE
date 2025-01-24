@@ -74,6 +74,7 @@ const ButtonContainer = styled.div`
   border-top: 4px solid ${(props) => props.color};
 `;
 
+// eslint-disable-next-line no-unused-vars
 const Cards = ({ category, setCategories, fetchCategories }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
@@ -152,6 +153,14 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
       console.error("Erro ao deletar card:", error);
     }
   };
+
+  const getImageUrl = (imagePath) => {
+    if (imagePath.startsWith("/uploads")) {
+      return `http://localhost:3000${imagePath}`;
+    }
+    return imagePath;
+  };
+
   if (!category) return null;
   return (
     <CardContainer>
@@ -175,9 +184,7 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
                 key={card.id}
                 color={getCategoryColor(category.category)}
               >
-                <CardImage
-                  src={card.image}
-                />
+                <CardImage src={getImageUrl(card.image)} />
                 <ButtonContainer color={getCategoryColor(category.category)}>
                   <Button
                     className={"card-button"}

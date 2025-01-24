@@ -1,8 +1,7 @@
-/* eslint-disable react/prop-types */
 import styled from "styled-components";
 import { useState } from "react";
 import DividerComponent from "../Divider";
-import Button from "../Button"; // Import the Button component
+import Button from "../Button";
 
 const FormContainer = styled.div`
   max-width: 50%;
@@ -112,7 +111,7 @@ const Form = ({ onSave }) => {
     id: "",
     title: "",
     category: "",
-    image: "",
+    image: null,
     videoLink: "",
     description: "",
   });
@@ -121,93 +120,50 @@ const Form = ({ onSave }) => {
     const { name, value, files } = target;
     setFormData({
       ...formData,
-      [name]: files ? files[0] : value,
+      [name]: name === "image" ? files[0] : value,
     });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Buscar as categorias existentes
     const response = await fetch("http://localhost:3000/categorias");
     const categories = await response.json();
 
-    // Encontra a categoria selecionada no select
     const selectedCategory = categories.find(
       (category) => category.category === formData.category
     );
 
     if (selectedCategory) {
-      // Requisição POST
-      await fetch(`http://localhost:3000/categorias/${selectedCategory._id}/cards`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: formData.title,
-          image: formData.image,
-          videoLink: formData.videoLink,
-          description: formData.description,
-        }),
-      });
+      const formDataToSend = new FormData();
+      formDataToSend.append("title", formData.title);
+      formDataToSend.append("videoLink", formData.videoLink);
+      formDataToSend.append("description", formData.description);
+      if (formData.image) {
+        formDataToSend.append("image", formData.image);
+      }
+
+      const response = await fetch(
+        `http://localhost:3000/categorias/${selectedCategory._id}/cards`,
+        {
+          method: "POST",
+          body: formDataToSend,
+        }
+      );
+
+      if (response.ok) {
+        const updatedCategory = await response.json();
+        onSave(updatedCategory);
+      } else {
+        console.error("Erro ao adicionar card:", response.statusText);
+      }
     }
 
-    // console.log("Categorias retornadas:", categories);
-
-    // const existingCategory = categories.find(
-    //   (category) => category.category === formData.category
-    // );
-
-    // if (existingCategory) {
-    //   console.log("Categoria existente encontrada:", existingCategory);
-
-    //   existingCategory.cards.push({
-    //     id: Date.now(),
-    //     title: formData.title,
-    //     image: formData.image,
-    //     videoLink: formData.videoLink,
-    //     description: formData.description,
-    //   });
-
-    //   await fetch(`http://localhost:5000/categories/${existingCategory.id}`, {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(existingCategory),
-    //   });
-    // } else {
-    //   await fetch("http://localhost:5000/categories", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       id: Date.now().toString(),
-    //       category: formData.category,
-    //       categoryColor: "#6BD1FF",
-    //       hoverColor: "#5BB8E5",
-    //       bgColor: "#f0f8ff",
-    //       cards: [
-    //         {
-    //           id: Date.now(),
-    //           title: formData.title,
-    //           image: formData.image,
-    //           videoLink: formData.videoLink,
-    //           description: formData.description,
-    //         },
-    //       ],
-    //     }),
-    //   });
-    // }
-
-    onSave(formData);
     setFormData({
       id: "",
       title: "",
       category: "",
-      image: "",
+      image: null,
       videoLink: "",
       description: "",
     });
@@ -217,7 +173,7 @@ const Form = ({ onSave }) => {
     setFormData({
       title: "",
       category: "",
-      image: "",
+      image: null,
       videoLink: "",
       description: "",
     });
@@ -262,7 +218,6 @@ const Form = ({ onSave }) => {
             <FormInput
               type="file"
               name="image"
-              value={formData.image}
               onChange={handleChange}
               placeholder="Imagem"
             ></FormInput>
@@ -290,7 +245,7 @@ const Form = ({ onSave }) => {
           </InputGroup>
         </FormGroup>
         <ButtonGroup>
-          <Button $variant="save" type="submit" onClick={handleSubmit}>
+          <Button $variant="save" type="submit">
             Salvar
           </Button>
           <Button type="button" $variant="limpar" onClick={handleClear}>
