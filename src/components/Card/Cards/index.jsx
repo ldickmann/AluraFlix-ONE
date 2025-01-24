@@ -39,6 +39,10 @@ const ContainerCategories = styled.div`
   display: flex;
   justify-self: flex-start;
   margin: 2rem 0rem 1rem 0rem;
+
+  @media screen and (min-width: 600px) and (max-width: 768px) {
+    margin: 2rem 0rem 1rem 2rem;
+  }
 `;
 
 const StyledCard = styled.div`

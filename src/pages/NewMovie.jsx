@@ -8,14 +8,6 @@ const Header = styled.div`
   align-items: center;
 `;
 
-const Section = styled.section`
-  display: flex;
-
-  @media (max-width: 430px) {
-    margin-inline: 1rem;
-  }
-`;
-
 const NewMovie = () => {
   const handleSave = async (data) => {
     try {
@@ -31,9 +23,7 @@ const NewMovie = () => {
       <Header>
         <TitleComponent>Novo Vídeo</TitleComponent>
       </Header>
-      <Section>
-        <Form onSave={handleSave} />
-      </Section>
+      <Form onSave={handleSave} />
     </>
   );
 };

@@ -57,10 +57,6 @@ const Card = styled.div`
     width: calc(70% - 100px);
   }
 
-  @media (max-width: 768px) {
-    width: calc(50% - 20px);
-  }
-
   @media (max-width: 430px) {
     width: 100%;
   }
@@ -155,6 +151,13 @@ const Carousel = ({ category, handleDelete, handleEditClick }) => {
     }
   };
 
+  const getImageUrl = (imagePath) => {
+    if (imagePath.startsWith("/uploads")) {
+      return `http://localhost:3000${imagePath}`;
+    }
+    return imagePath;
+  };
+
   return (
     <CarouselContainer>
       <CardsWrapper $isSmallScreen={isSmallScreen}>
@@ -174,7 +177,10 @@ const Carousel = ({ category, handleDelete, handleEditClick }) => {
             color={getCategoryColor(category.category)}
             $isSmallScreen={isSmallScreen}
           >
-            <CardImage src={card.image} $isSmallScreen={isSmallScreen} />
+            <CardImage
+              src={getImageUrl(card.image)}
+              $isSmallScreen={isSmallScreen}
+            />
             <ButtonContainer color={getCategoryColor(category.category)}>
               <Button
                 className={"card-button"}

@@ -4,15 +4,17 @@ import DividerComponent from "../Divider";
 import Button from "../Button";
 
 const FormContainer = styled.div`
-  max-width: 50%;
-  width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   border: 3px solid var(--color-white);
   padding: 2rem;
-  flex: 0.5%;
-  margin: 3rem auto;
+  margin: 3rem 12rem;
+
+  @media (max-width: 768px) {
+    margin: 3rem 5rem;
+  }
 
   @media (max-width: 430px) {
     border: none;
