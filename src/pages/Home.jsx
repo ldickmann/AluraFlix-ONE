@@ -73,14 +73,24 @@ const Home = () => {
         {loading ? (
           <p>Carregando categorias...</p>
         ) : categories && categories.length > 0 ? (
-          categories.map((category) => (
-            <Cards
-              key={category._id}
-              category={category}
-              setCategories={setCategories}
-              fetchCategories={fetchCategories}
-            />
-          ))
+          categories.map((category) => {
+            return (
+              <div key={category._id}>
+                {" "}
+                {/* Adicione um div para envolver a verificação */}
+                {category.cards && category.cards.length > 0 ? (
+                  <Cards
+                    key={category._id}
+                    category={category}
+                    setCategories={setCategories}
+                    fetchCategories={fetchCategories}
+                  />
+                ) : (
+                  <p>Nenhum card para a categoria: {category.category}</p>
+                )}
+              </div>
+            );
+          })
         ) : (
           <p>Nenhuma categoria encontrada.</p>
         )}

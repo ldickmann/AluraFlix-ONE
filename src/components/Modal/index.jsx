@@ -137,9 +137,9 @@ const ModalButton = styled.button`
 
 const Modal = ({ isOpen, onClose, cardData, onSave }) => {
   const [formData, setFormData] = useState({
-    id: null,
     title: "",
     category: "",
+    categoryId: "",
     image: "",
     videoLink: "",
     description: "",
@@ -164,9 +164,10 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
   useEffect(() => {
     if (cardData) {
       setFormData({
-        id: cardData.id,
+        _id: cardData._id || "",
         title: cardData.title || "",
         category: cardData.category || "",
+        categoryId: cardData.categoryId || "",
         image: cardData.image || "",
         videoLink: cardData.videoLink || "",
         description: cardData.description || "",
@@ -174,48 +175,117 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
     }
   }, [cardData]);
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: name === "image" ? files[0] : value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const cardId = cardData.id;
-    const categoryId = cardData.id;
-
+  const moveCard = async (categoryIdOrigem, categoryIdDestino, cardId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/categorias/${categoryId}/cards/${cardId}`,
+        `http://localhost:3000/categorias/${categoryIdOrigem}/cards/${cardId}`,
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
+          headers: { "Content-Type": "application/json" },
         }
       );
 
+      if (!response.ok) {
+        throw new Error(`Erro ao mover card: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Card movido com sucesso:", data);
+
+      const responseDestino = await fetch(
+        `http://localhost:3000/categorias/${categoryIdDestino}/cards/${cardId}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (!responseDestino.ok) {
+        throw new Error(`Erro ao mover card: ${responseDestino.status}`);
+      }
+
+      const dataDestino = await responseDestino.json();
+      console.log("Card movido com sucesso:", dataDestino);
+    } catch (error) {
+      console.error("Erro ao mover card:", error);
+    }
+  };
+
+  const handleChange = async (e) => {
+    const { name, value, files } = e.target;
+
+    if (name === "category") {
+      const selectedCategory = categories.find(
+        (category) => category.category === value
+      );
+
+      if (!formData._id) {
+        console.error("ID do card não encontrado.");
+        return;
+      }
+
+      if (selectedCategory && formData.categoryId !== selectedCategory._id) {
+        try {
+          await moveCard(
+            formData.categoryId,
+            selectedCategory._id,
+            formData._id
+          );
+        } catch (error) {
+          console.error("Erro ao mover card:", error);
+        }
+      }
+
+      setFormData((prevData) => ({
+        ...prevData,
+        category: value,
+        categoryId: selectedCategory ? selectedCategory._id : "",
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: name === "image" ? files[0] : value,
+      }));
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const updatedCardData = {
+        title: formData.title,
+        description: formData.description,
+        image: formData.image,
+        videoLink: formData.videoLink,
+      };
+
+      const response = await fetch(
+        `http://localhost:3000/categorias/${formData.categoryId}/cards/${formData._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedCardData),
+        }
+      );
+
+      const data = await response.json();
       if (response.ok) {
-        onSave(formData);
-        onClose();
+        console.log("Card atualizado com sucesso:", data);
+        onSave(data); // Chame a função onSave para atualizar o estado do componente pai
       } else {
-        console.error("Erro ao atualizar dados:", response.statusText);
+        console.error("Erro ao atualizar o card:", data);
       }
     } catch (error) {
-      console.error("Erro ao atualizar dados:", error);
+      console.error("Erro ao fazer a requisição:", error);
     }
   };
 
   const handleClear = () => {
     setFormData({
-      _id: null,
       title: "",
       category: "",
+      categoryId: "",
       image: "",
       videoLink: "",
       description: "",
@@ -244,16 +314,7 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
             <Select
               name="category"
               value={formData.category}
-              onChange={(e) => {
-                const selectedCategory = categories.find(
-                  (category) => category.category === e.target.value
-                );
-                setFormData((prevData) => ({
-                  ...prevData,
-                  category: e.target.value,
-                  categoryId: selectedCategory ? selectedCategory._id : "",
-                }));
-              }}
+              onChange={handleChange}
             >
               <option value="">Selecione a Categoria</option>
               {categories.map((category) => (
@@ -303,14 +364,15 @@ Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   cardData: PropTypes.shape({
-    id: PropTypes.number,
+    _id: PropTypes.string,
     title: PropTypes.string,
     category: PropTypes.string,
+    categoryId: PropTypes.string,
     image: PropTypes.string,
     videoLink: PropTypes.string,
     description: PropTypes.string,
-  }),
-  onSave: PropTypes.func.isRequired,
+  }).isRequired,
+  onSave: PropTypes.func.isRequired, // Adicione esta linha para validar a prop onSave
 };
 
 export default Modal;

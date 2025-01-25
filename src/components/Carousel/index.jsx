@@ -173,7 +173,7 @@ const Carousel = ({ category, handleDelete, handleEditClick }) => {
         )}
         {getVisibleCards().map((card) => (
           <Card
-            key={card.id}
+            key={card._id}
             color={getCategoryColor(category.category)}
             $isSmallScreen={isSmallScreen}
           >
@@ -184,7 +184,7 @@ const Carousel = ({ category, handleDelete, handleEditClick }) => {
             <ButtonContainer color={getCategoryColor(category.category)}>
               <Button
                 className={"card-button"}
-                onClick={() => handleDelete(card.id)}
+                onClick={() => handleDelete(card._id)}
                 size="small"
                 icon={IoTrashBinOutline}
               >
@@ -212,7 +212,7 @@ Carousel.propTypes = {
     categoryColor: PropTypes.string.isRequired,
     cards: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        _id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired,
         videoLink: PropTypes.string.isRequired,

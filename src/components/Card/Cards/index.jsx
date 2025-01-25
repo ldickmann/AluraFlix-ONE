@@ -104,7 +104,7 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
   }, [category]);
 
   const handleEditClick = (card) => {
-    setSelectedCard({ ...card, categoryId: category._id });
+    setSelectedCard({ ...card, categoryId: category._id, id: card._id });
     setIsModalOpen(true);
   };
 
@@ -115,6 +115,11 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
 
   const handleSave = async (updatedCard) => {
     try {
+      console.log("Updated Card:", updatedCard); // Log the updatedCard object
+      if (!updatedCard.categoryId || !updatedCard.id) {
+        console.error("categoryId or id is missing in updatedCard");
+        return;
+      }
       const response = await fetch(
         `http://localhost:3000/categorias/${updatedCard.categoryId}/cards/${updatedCard.id}`,
         {
@@ -129,7 +134,6 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
       if (response.ok) {
         fetchCategories();
         closeModal();
-        console.log("Dados atualizados");
       } else {
         console.error("Erro ao atualizar dados:", response.statusText);
       }
@@ -184,14 +188,14 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
             cards.length > 0 &&
             cards.map((card) => (
               <StyledCard
-                key={card.id}
+                key={card._id}
                 color={getCategoryColor(category.category)}
               >
                 <CardImage src={getImageUrl(card.image)} />
                 <ButtonContainer color={getCategoryColor(category.category)}>
                   <Button
                     className={"card-button"}
-                    onClick={() => handleDelete(card.id)}
+                    onClick={() => handleDelete(card._id)}
                     size="small"
                     icon={IoTrashBinOutline}
                   >
@@ -231,13 +235,13 @@ Cards.propTypes = {
     bgColor: PropTypes.string,
     cards: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        _id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         image: PropTypes.string,
         videoLink: PropTypes.string,
         description: PropTypes.string.isRequired,
       })
-    ).isRequired,
+    ),
   }).isRequired,
   setCategories: PropTypes.func.isRequired,
   fetchCategories: PropTypes.func.isRequired,

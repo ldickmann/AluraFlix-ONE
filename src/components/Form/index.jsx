@@ -112,7 +112,6 @@ const ButtonGroup = styled.div`
 
 const Form = ({ onSave }) => {
   const [formData, setFormData] = useState({
-    id: "",
     title: "",
     category: "",
     image: null,
@@ -129,6 +128,41 @@ const Form = ({ onSave }) => {
       [name]: name === "image" ? files[0] : value,
     });
   };
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+
+  //   const response = await fetch("http://localhost:3000/categorias");
+  //   const categories = await response.json();
+
+  //   const selectedCategory = categories.find(
+  //     (category) => category.category === formData.category
+  //   );
+
+  //   if (selectedCategory) {
+  //     const formDataToSend = new FormData();
+  //     formDataToSend.append("title", formData.title);
+  //     formDataToSend.append("videoLink", formData.videoLink);
+  //     formDataToSend.append("description", formData.description);
+  //     if (formData.image) {
+  //       formDataToSend.append("image", formData.image);
+  //     }
+
+  //     const response = await fetch(
+  //       `http://localhost:3000/categorias/${selectedCategory._id}/cards`,
+  //       {
+  //         method: "POST",
+  //         body: formDataToSend,
+  //       }
+  //     );
+
+  //     if (response.ok) {
+  //       const updatedCategory = await response.json();
+  //       onSave(updatedCategory);
+  //     } else {
+  //       console.error("Erro ao adicionar card:", response.statusText);
+  //     }
+  //   }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -161,12 +195,15 @@ const Form = ({ onSave }) => {
         const updatedCategory = await response.json();
         onSave(updatedCategory);
       } else {
-        console.error("Erro ao adicionar card:", response.statusText);
+        const errorData = await response.json();
+        console.error(
+          "Erro ao adicionar card:",
+          errorData?.message || response.statusText
+        );
       }
     }
 
     setFormData({
-      id: "",
       title: "",
       category: "",
       image: null,
