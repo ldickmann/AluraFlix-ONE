@@ -29,6 +29,16 @@ const ButtonBase = styled.button`
   }
 
   ${(props) =>
+    props.size === "long" &&
+    css`
+      width: 100%;
+      height: 20px;
+      background-color: var(--color-blue-light);
+      border-radius: 5px;
+      font-size: 15px;
+    `}
+
+  ${(props) =>
     props.size === "big" &&
     css`
       width: 296.822px;
@@ -60,7 +70,7 @@ const ButtonBase = styled.button`
       &.svg {
         width: 20px;
         height: 20px;
-      } 
+      }
     `}
 
   &.home-button {
@@ -141,7 +151,7 @@ Button.propTypes = {
   type: PropTypes.string,
   onClick: PropTypes.func,
   className: PropTypes.string,
-  size: PropTypes.oneOf(["big", "medium", "small"]),
+  size: PropTypes.oneOf(["big", "medium", "small", "long"]),
   icon: PropTypes.elementType,
 };
 

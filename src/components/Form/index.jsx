@@ -3,6 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import DividerComponent from "../Divider";
 import Button from "../Button";
+import AddCategoryModal from "../AddCategoryModal";
 
 const FormContainer = styled.div`
   display: flex;
@@ -13,7 +14,7 @@ const FormContainer = styled.div`
   padding: 2rem;
   margin: 3rem 12rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: 778px) {
     margin: 3rem 5rem;
   }
 
@@ -119,6 +120,8 @@ const Form = ({ onSave }) => {
     description: "",
   });
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleChange = ({ target }) => {
     const { name, value, files } = target;
     setFormData({
@@ -182,6 +185,34 @@ const Form = ({ onSave }) => {
     });
   };
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSaveCategory = async (newCategory) => {
+    try {
+      const response = await fetch("http://localhost:3000/categorias", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newCategory),
+      });
+
+      if (response.ok) {
+        handleCloseModal();
+      } else {
+        console.error("Erro ao adicionar categoria:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Erro ao adicionar categoria:", error);
+    }
+  };
+
   return (
     <FormContainer>
       <Forms onSubmit={handleSubmit}>
@@ -213,6 +244,9 @@ const Form = ({ onSave }) => {
               <option value="INOVAÇÃO">Inovação</option>
               <option value="GESTÃO">Gestão</option>
             </Select>
+            <Button type="button" onClick={handleOpenModal} size="long">
+              Adicionar Categoria
+            </Button>
           </InputGroup>
         </FormGroup>
         <FormGroup>
@@ -256,6 +290,11 @@ const Form = ({ onSave }) => {
           </Button>
         </ButtonGroup>
       </Forms>
+      <AddCategoryModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveCategory}
+      />
     </FormContainer>
   );
 };
