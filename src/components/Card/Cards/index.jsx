@@ -104,7 +104,7 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
   }, [category]);
 
   const handleEditClick = (card) => {
-    setSelectedCard(card);
+    setSelectedCard({ ...card, categoryId: category._id });
     setIsModalOpen(true);
   };
 
@@ -113,20 +113,26 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
     setSelectedCard(null);
   };
 
-  const handleSave = async () => {
+  const handleSave = async (updatedCard) => {
     try {
-      // Atualiza os cards no estado e backend após salvar no modal
-      await fetch(`http://localhost:3000/categorias/${category._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(category),
-      });
+      const response = await fetch(
+        `http://localhost:3000/categorias/${updatedCard.categoryId}/cards/${updatedCard.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedCard),
+        }
+      );
 
-      fetchCategories();
-      closeModal();
-      console.log("Dados atualizados");
+      if (response.ok) {
+        fetchCategories();
+        closeModal();
+        console.log("Dados atualizados");
+      } else {
+        console.error("Erro ao atualizar dados:", response.statusText);
+      }
     } catch (error) {
       console.error("Erro ao atualizar dados:", error);
     }
@@ -158,6 +164,7 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
   };
 
   if (!category) return null;
+
   return (
     <CardContainer>
       <ContainerCategories>

@@ -145,6 +145,22 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
     description: "",
   });
 
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/categorias");
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Erro ao buscar categorias:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   useEffect(() => {
     if (cardData) {
       setFormData({
@@ -169,45 +185,35 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const cardId = cardData.id;
+    const categoryId = cardData.id;
+
     try {
-      const response = await fetch("http://localhost:3000/categorias");
-      const categories = await response.json();
-      const categoryToUpdate = categories.find(
-        (cat) => cat.cards && cat.cards.some((card) => card.id === cardData.id)
+      const response = await fetch(
+        `http://localhost:3000/categorias/${categoryId}/cards/${cardId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
       );
 
-      if (categoryToUpdate) {
-        const selectedCategory = categories.find(
-          (category) => category.category === formData.category
-        );
-
-        if (selectedCategory && selectedCategory._id !== categoryToUpdate._id) {
-          const formDataToSend = new FormData();
-          formDataToSend.append("title", formData.title);
-          formDataToSend.append("videoLink", formData.videoLink);
-          formDataToSend.append("description", formData.description);
-          if (formData.image) {
-            formDataToSend.append("image", formData.image);
-          }
-
-          await fetch(
-            `http://localhost:3000/categorias/${selectedCategory._id}/cards/${formData.id}`,
-            {
-              method: "PUT",
-              body: formDataToSend,
-            }
-          );
-        }
+      if (response.ok) {
+        onSave(formData);
+        onClose();
+      } else {
+        console.error("Erro ao atualizar dados:", response.statusText);
       }
-      onSave(formData);
-      onClose(); // Close the modal after saving
     } catch (error) {
-      console.error("Error updating card:", error);
+      console.error("Erro ao atualizar dados:", error);
     }
   };
 
   const handleClear = () => {
     setFormData({
+      _id: null,
       title: "",
       category: "",
       image: "",
@@ -238,14 +244,23 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
             <Select
               name="category"
               value={formData.category}
-              onChange={handleChange}
+              onChange={(e) => {
+                const selectedCategory = categories.find(
+                  (category) => category.category === e.target.value
+                );
+                setFormData((prevData) => ({
+                  ...prevData,
+                  category: e.target.value,
+                  categoryId: selectedCategory ? selectedCategory._id : "",
+                }));
+              }}
             >
               <option value="">Selecione a Categoria</option>
-              <option value="FRONTEND">Front End</option>
-              <option value="BACKEND">Back End</option>
-              <option value="MOBILE">Mobile</option>
-              <option value="INOVAÇÃO">Inovação</option>
-              <option value="GESTÃO">Gestão</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category.category}>
+                  {category.category}
+                </option>
+              ))}
             </Select>
           </FormGroup>
           <FormGroup>
