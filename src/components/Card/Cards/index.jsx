@@ -85,15 +85,7 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
   const [isCarousel, setIsCarousel] = useState(false);
   const [cards, setCards] = useState(category.cards);
 
-  const categoryColors = {
-    FRONTEND: "#6BD1FF",
-    BACKEND: "#00C86F",
-    MOBILE: "#FFBA05",
-    INOVAÇÃO: "#FF4C61",
-    GESTÃO: "#FF7A05",
-  };
-
-  const getCategoryColor = (title) => categoryColors[title] || "#6BD1FF";
+  const getCategoryColor = () => category.categoryColor || "#6BD1FF";
 
   useEffect(() => {
     const handleResize = () => {
