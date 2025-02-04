@@ -1,7 +1,7 @@
+import { useLocation, Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../../assets/images/logo.png";
 import Button from "../Button";
-import { useLocation, Link } from "react-router-dom";
 
 const HeaderStyle = styled.header`
   display: flex;
@@ -34,7 +34,9 @@ const Header = () => {
 
   return (
     <HeaderStyle>
-      <Logo src={logo} alt="AluraFlix logo" />
+      <Link to="/">
+        <Logo src={logo} alt="AluraFlix logo" />
+      </Link>
       <ButtonsHeader>
         <Link to="/">
           <Button

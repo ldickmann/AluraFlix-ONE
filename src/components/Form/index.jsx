@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import DividerComponent from "../Divider";
@@ -119,7 +119,22 @@ const Form = ({ onSave }) => {
     description: "",
   });
 
+  const [categories, setCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/categorias");
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Erro ao buscar categorias:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleChange = ({ target }) => {
     const { name, value, files } = target;
@@ -128,41 +143,6 @@ const Form = ({ onSave }) => {
       [name]: name === "image" ? files[0] : value,
     });
   };
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-
-  //   const response = await fetch("http://localhost:3000/categorias");
-  //   const categories = await response.json();
-
-  //   const selectedCategory = categories.find(
-  //     (category) => category.category === formData.category
-  //   );
-
-  //   if (selectedCategory) {
-  //     const formDataToSend = new FormData();
-  //     formDataToSend.append("title", formData.title);
-  //     formDataToSend.append("videoLink", formData.videoLink);
-  //     formDataToSend.append("description", formData.description);
-  //     if (formData.image) {
-  //       formDataToSend.append("image", formData.image);
-  //     }
-
-  //     const response = await fetch(
-  //       `http://localhost:3000/categorias/${selectedCategory._id}/cards`,
-  //       {
-  //         method: "POST",
-  //         body: formDataToSend,
-  //       }
-  //     );
-
-  //     if (response.ok) {
-  //       const updatedCategory = await response.json();
-  //       onSave(updatedCategory);
-  //     } else {
-  //       console.error("Erro ao adicionar card:", response.statusText);
-  //     }
-  //   }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -275,11 +255,11 @@ const Form = ({ onSave }) => {
               onChange={handleChange}
             >
               <option value="">Selecione a Categoria</option>
-              <option value="FRONTEND">Front End</option>
-              <option value="BACKEND">Back End</option>
-              <option value="MOBILE">Mobile</option>
-              <option value="INOVAÇÃO">Inovação</option>
-              <option value="GESTÃO">Gestão</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category.category}>
+                  {category.category}
+                </option>
+              ))}
             </Select>
             <Button type="button" onClick={handleOpenModal} size="long">
               Adicionar Categoria
