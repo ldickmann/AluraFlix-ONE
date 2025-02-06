@@ -198,7 +198,6 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
     event.preventDefault();
 
     try {
-      // Create FormData object to handle file uploads
       const formDataToSend = new FormData();
       formDataToSend.append("title", formData.title);
       formDataToSend.append("description", formData.description);
@@ -208,11 +207,14 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
         formDataToSend.append("image", formData.image);
       }
 
+      // Use the moveCardToCategory endpoint
       const response = await fetch(
-        `http://localhost:3000/categorias/${formData.categoryId}/cards/${formData._id}`,
+        `http://localhost:3000/categorias/${cardData.categoryId}/move-card/${cardData._id}/to/${formData.categoryId}`,
         {
-          method: "PUT",
-          body: formDataToSend,
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -221,11 +223,11 @@ const Modal = ({ isOpen, onClose, cardData, onSave }) => {
       }
 
       const data = await response.json();
-      console.log("Card atualizado com sucesso:", data);
+      console.log("Card movido com sucesso:", data);
       onSave(data);
       onClose();
     } catch (error) {
-      console.error("Erro ao atualizar o card:", error);
+      console.error("Erro ao mover o card:", error);
     }
   };
 
