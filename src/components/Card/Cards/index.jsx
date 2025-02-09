@@ -115,19 +115,29 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
 
   const handleSave = async (updatedCard) => {
     try {
-      console.log("Updated Card:", updatedCard); // Log the updatedCard object
-      if (!updatedCard.categoryId || !updatedCard.id) {
+      console.log("Updated Card:", updatedCard);
+
+      const cardId = updatedCard.id || updatedCard._id;
+      const categoryId = updatedCard.categoryId || category._id;
+
+      if (!categoryId || !cardId) {
         console.error("categoryId or id is missing in updatedCard");
         return;
       }
+
       const response = await fetch(
-        `http://localhost:3000/categorias/${updatedCard.categoryId}/cards/${updatedCard.id}`,
+        `http://localhost:3000/categorias/${categoryId}/cards/${cardId}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(updatedCard),
+          body: JSON.stringify({
+            title: updatedCard.title,
+            description: updatedCard.description,
+            videoLink: updatedCard.videoLink,
+            image: updatedCard.image,
+          }),
         }
       );
 
@@ -135,7 +145,8 @@ const Cards = ({ category, setCategories, fetchCategories }) => {
         fetchCategories();
         closeModal();
       } else {
-        console.error("Erro ao atualizar dados:", response.statusText);
+        const errorData = await response.json();
+        console.error("Erro ao atualizar dados:", errorData);
       }
     } catch (error) {
       console.error("Erro ao atualizar dados:", error);
